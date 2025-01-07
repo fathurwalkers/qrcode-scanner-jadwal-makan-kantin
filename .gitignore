@@ -9,7 +9,7 @@
 .env
 .env.backup
 .env.production
-.datakaryawan.json
+datakaryawan.json
 .phpactor.json
 .phpunit.result.cache
 Homestead.json
