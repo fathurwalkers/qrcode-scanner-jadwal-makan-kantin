@@ -6,6 +6,13 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::group(['prefix' => '/home'], function () {
+
+    // Home Route
+    Route::get('/', [HomeController::class, 'index'])->name('home');
+
+});
+
 Route::group(['prefix' => '/dashboard'], function () {
 
     // Index Route
