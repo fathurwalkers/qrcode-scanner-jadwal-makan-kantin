@@ -22,8 +22,8 @@ return new class extends Migration
             $table->time('jadwal_jam_malam')->nullable();
             $table->string('jadwal_status')->nullable();
 
-            $table->unsignedBigInteger('karyawan_id')->nullable()->default(null);
-            $table->foreign('karyawan_id')->references('id')->on('karyawan')->onDelete('cascade');
+            $table->unsignedBigInteger('data_id')->nullable()->default(null);
+            $table->foreign('data_id')->references('id')->on('data')->onDelete('cascade');
             $table->unsignedBigInteger('periode_id')->nullable()->default(null);
             $table->foreign('periode_id')->references('id')->on('periode')->onDelete('cascade');
 

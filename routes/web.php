@@ -1,6 +1,10 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\BackController;
+use App\Http\Controllers\GenerateController;
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\HomeController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -19,3 +23,5 @@ Route::group(['prefix' => '/dashboard'], function () {
     Route::get('/', [DashboardController::class, 'index'])->name('home');
 
 });
+
+Route::get('/generate-data', [GenerateController::class, 'generate_data'])->name('generate-data');
