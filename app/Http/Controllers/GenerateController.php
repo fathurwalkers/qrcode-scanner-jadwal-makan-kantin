@@ -384,7 +384,7 @@ class GenerateController extends Controller
                 'created_at' => now(),
                 'updated_at' => now()
             ]);
-            dd_table($save_data);
+            // dd_table($save_data);
         }
     }
 }
