@@ -13,6 +13,9 @@ use App\Models\Data;
 use App\Models\Periode;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Crypt;
 
 class GenerateController extends Controller
 {
@@ -369,22 +372,76 @@ class GenerateController extends Controller
             ["348","HERDY ADI SAPUTRA","00120","TANPA KETERANGAN","STAFF GEOLOGIS","TANPA KETERANGAN"],
             ["349","MEGA BAYU SURYANTOKO","00121","TANPA KETERANGAN","MINE PLAN","TANPA KETERANGAN"],
             ["350","FIRMAN GUSTAMAN","00101","TANPA KETERANGAN","GEOLOGIST","TANPA KETERANGAN"],
-
         ];
 
         foreach ($data as $d) {
             $dat = new Data;
+            $qr_raw = $d[1] . "#" . $d[2];
+            $qr = Hash::make($qr_raw, [
+                'rounds' => 12,
+            ]);
             $save_data = $dat->create([
                 'data_nama' => $d[1],
                 'data_no_id_card' => $d[2],
                 'data_divisi' => $d[3],
                 'data_dept' => $d[4],
                 'data_jabatan' => $d[5],
-                'data_qr' => $d[2],
+                'data_kategori' => "MESS",
+                'data_qr' => $qr,
                 'created_at' => now(),
                 'updated_at' => now()
             ]);
-            // dd_table($save_data);
+        }
+    }
+
+    public function generate_qr()
+    {
+        $data = Data::find(184);
+
+        $qr = QrCode::format('png')->generate($data->data_qr);
+        $qrImageName = $data->data_nama . '.png';
+
+        // simpan ke local storage
+        $store_qr = Storage::put('public/qr/' . $qrImageName, $qr);
+
+        dd([
+            $data, $store_qr
+        ]);
+    }
+
+    public function test_qr()
+    {
+        return view("testqr");
+    }
+
+    public function isAes256EncryptedJson($input)
+    {
+        if (preg_match('/^[a-zA-Z0-9\/\+=]*$/', $input)) {
+            $decoded = base64_decode($input, true);
+            if ($decoded !== false) {
+                $jsonData = json_decode($decoded, true);
+                if (json_last_error() === JSON_ERROR_NONE) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    public function proses_test_qr(Request $request)
+    {
+        $data = Data::find(184);
+        $qr_request = $request->qr;
+        if ($this->isAes256EncryptedJson($qr_request)) {
+            $decryptedData = Crypt::decryptString($qr_request);
+            $exploding_sun = explode("#", $decryptedData);
+            if($data->data_nama == $exploding_sun[0] || $data->data_no_id_card == $exploding_sun[1]) {
+                echo "HORE KAMU BISA MAKAN!";
+            } else {
+                echo "TIDAK BISA MAKAN!";
+            }
+        } else {
+            echo "Maaf jangan input sembarangan bos!";
         }
     }
 }

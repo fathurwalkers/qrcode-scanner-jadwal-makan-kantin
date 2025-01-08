@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('data_divisi')->nullable();
             $table->string('data_dept')->nullable();
             $table->string('data_jabatan')->nullable();
+            $table->string('data_kategori')->nullable();
             $table->text('data_qr')->nullable();
 
             $table->timestamps();
