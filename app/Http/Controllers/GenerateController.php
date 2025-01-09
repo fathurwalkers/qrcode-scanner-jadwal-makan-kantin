@@ -397,16 +397,9 @@ class GenerateController extends Controller
     public function generate_qr()
     {
         $data = Data::find(184);
-
         $qr = QrCode::format('png')->generate($data->data_qr);
         $qrImageName = $data->data_nama . '.png';
-
-        // simpan ke local storage
         $store_qr = Storage::put('public/qr/' . $qrImageName, $qr);
-
-        dd([
-            $data, $store_qr
-        ]);
     }
 
     public function test_qr()
