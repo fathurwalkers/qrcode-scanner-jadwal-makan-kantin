@@ -6,7 +6,7 @@ use Livewire\Component;
 
 class Index extends Component
 {
-    public $nama = "Karyawan";
+    public $nama = "Karyawan bin Karyawan K. Karyawan";
     public $subuh = "TIDAK";
     public $pagi = "YA";
     public $siang = "TIDAK";

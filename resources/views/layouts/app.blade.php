@@ -34,11 +34,31 @@
         .card-body .fa-clock {
             color: #1cc88a; /* Warna hijau yang lembut */
         }
+
+        .countdown {
+            font-size: 15px;
+            font-weight: bold;
+        }
+        .red {
+            color: red;
+        }
+        .green {
+            color: green;
+        }
+
+        .waktu-scan {
+            font-size: 12px;
+        }
+
+        .text-middle {
+            vertical-align: middle !important;
+        }
     </style>
+    @push('css')
 </head>
 
 <body>
-    <header>
+    {{-- <header>
         <nav class="navbar navbar-expand-lg navbar-light bg-dark">
             <div class="container">
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo01"
@@ -55,7 +75,7 @@
                 </div>
             </div>
         </nav>
-    </header>
+    </header> --}}
 
     <main>
         <div class="container">
@@ -65,6 +85,7 @@
 
     <script src="{{ asset('assets/jquery') }}/jquery.min.js"></script>
     <script src="{{ asset('assets/bootstrap4/js') }}/bootstrap.min.js"></script>
+    @stack('js')
 </body>
 
 </html>
