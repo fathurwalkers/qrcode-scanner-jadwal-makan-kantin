@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link href="{{ asset('assets/bootstrap4/css') }}/bootstrap.min.css" rel="stylesheet">
+    <link href="{{ asset('assets/fontawesome5/css') }}/all.min.css" rel="stylesheet">
     <title>{{ $title ?? 'Title' }}</title>
 
     <style>
@@ -15,6 +16,23 @@
 
             /* Pastikan transparansi background di gambar tidak mengganggu */
             background-color: transparent;
+        }
+
+        .card {
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .card-header {
+            font-size: 1.2rem;
+        }
+
+        .card-body .text-gray-800 {
+            color: #4e73df; /* Warna yang lebih sesuai */
+        }
+
+        .card-body .fa-clock {
+            color: #1cc88a; /* Warna hijau yang lembut */
         }
     </style>
 </head>
@@ -29,17 +47,11 @@
                 </button>
                 <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
                     <a class="navbar-brand" href="#">
-                        <img src="{{ asset('assets/img') }}/logo.png" height="30" alt="" class="logo-styled">
+                        <img src="{{ asset('assets/img') }}/logo.png" height="30" alt="" class="logo-styled mr-auto">
                     </a>
-                    <ul class="navbar-nav mr-auto mt-2 mt-lg-0 ml-4">
-                        <li class="nav-item active">
-                            <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
-                        </li>
-                    </ul>
-                    <form class="form-inline my-2 my-lg-0">
-                        <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-                        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-                    </form>
+                    <div class="my-2 ml-auto">
+                        <button class="btn btn-success my-2 my-sm-0" type="submit">Laporan</button>
+                    </div>
                 </div>
             </div>
         </nav>
