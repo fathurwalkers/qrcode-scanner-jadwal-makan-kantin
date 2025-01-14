@@ -20,15 +20,17 @@
     </div>
     <div class="row mt-2 mb-1">
         <div class="col-md-8">
-            <div class="input-group">
-                <input type="text" class="form-control" placeholder="Search..." aria-label="Search" autofocus>
-                <div class="input-group-append">
-                    <button class="btn btn-info" type="button">
-                        <i class="fas fa-search"></i>
-                        Scan QR Anda
-                    </button>
+            <form wire:submit="store" class="">
+                <div class="input-group">
+                    <input type="text" class="form-control" placeholder="Silahkan scan QR anda disini..." aria-label="Search" wire:model.lazy="qr_input" autofocus>
+                    <div class="input-group-append">
+                        <button class="btn btn-info" type="submit">
+                            <i class="fas fa-search"></i>
+                            Scan QR Anda
+                        </button>
+                    </div>
                 </div>
-            </div>
+            </form>
         </div>
         <div class="col-md-4">
             <div class="input-group">
@@ -75,7 +77,7 @@
                                 @break
                             @endswitch
                             <p class="waktu-scan">
-                                Waktu Scan : 00:42 PM
+                                Waktu Scan : {{ $waktu_scan_pagi }}
                             </p>
                         </td>
                         <td class="text-center" width="15%">
@@ -89,7 +91,7 @@
                                 @break
                             @endswitch
                             <p class="waktu-scan">
-                                Waktu Scan : 00:42 PM
+                                Waktu Scan : {{ $waktu_scan_siang }}
                             </p>
                         </td>
                         <td class="text-center" width="15%">
@@ -103,7 +105,7 @@
                                 @break
                             @endswitch
                             <p class="waktu-scan">
-                                Waktu Scan : 00:42 PM
+                                Waktu Scan : {{ $waktu_scan_malam }}
                             </p>
                         </td>
                         <td class="text-center" width="15%">
@@ -117,7 +119,7 @@
                                 @break
                             @endswitch
                             <p class="waktu-scan">
-                                Waktu Scan : 00:42 PM
+                                Waktu Scan : {{ $waktu_scan_subuh }}
                             </p>
                         </td>
                     </tr>
