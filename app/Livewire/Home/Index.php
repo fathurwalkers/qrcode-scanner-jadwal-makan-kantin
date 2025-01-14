@@ -17,6 +17,8 @@ class Index extends Component
     public $waktu_scan_malam = "16:00";
     public $tanggalwaktu = "06/01/2025";
 
+    public $qr_input;
+
     #[Title('QR Scanner App - PT. KPA')]
     public function render()
     {
