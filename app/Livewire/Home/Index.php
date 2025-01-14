@@ -38,6 +38,7 @@ class Index extends Component
     public function store()
     {
         $this->searchData($this->qr_input);
+        $this->qr_input = '';
     }
 
     public function searchData($inputPass)
@@ -48,51 +49,68 @@ class Index extends Component
         $data = Data::where('data_nama', $explodeInputRequest[0])
             ->where('data_no_id_card', $explodeInputRequest[1])
             ->first();
-
-        if ($data == true) {
-            $jadwal = new Jadwal;
-
+        if ($data) {
             $tanggalHariIni = $now->toDateString();
             $currentHour = $now->hour;
-
             $this->nama = $data->data_nama;
             $this->tanggalwaktu = $now->toDateTimeString();
-
-            $this->subuh = 'TIDAK';
-            $this->pagi = 'TIDAK';
-            $this->siang = 'TIDAK';
-            $this->malam = 'TIDAK';
-
+            $jadwalCek = [
+                'subuh' => 'TIDAK',
+                'pagi' => 'TIDAK',
+                'siang' => 'TIDAK',
+                'malam' => 'TIDAK'
+            ];
+            $jadwalJam = [
+                'subuh' => null,
+                'pagi' => null,
+                'siang' => null,
+                'malam' => null
+            ];
+            $rentangWaktu = '';
             if ($currentHour >= 4 && $currentHour < 9) {
-                $this->pagi = 'YA';
-                $this->waktu_scan_pagi = $now->toTimeString();
+                $rentangWaktu = 'pagi';
             } elseif ($currentHour >= 9 && $currentHour < 15) {
-                $this->siang = 'YA';
-                $this->waktu_scan_siang = $now->toTimeString();
+                $rentangWaktu = 'siang';
             } elseif ($currentHour >= 15 && $currentHour < 19) {
-                $this->malam = 'YA';
-                $this->waktu_scan_malam = $now->toTimeString();
+                $rentangWaktu = 'malam';
             } elseif ($currentHour >= 0 && $currentHour < 4 || $currentHour >= 19 && $currentHour < 24) {
-                $this->subuh = 'YA';
-                $this->waktu_scan_subuh = $now->toTimeString();
+                $rentangWaktu = 'subuh';
             }
+            $jadwalCek[$rentangWaktu] = 'YA';
+            $jadwalJam[$rentangWaktu] = $now->toTimeString();
+            $existingJadwal = Jadwal::where('jadwal_tanggal', $tanggalHariIni)
+                ->where('data_id', $data->id)
+                ->where("jadwal_cek_{$rentangWaktu}", 'YA')
+                ->first();
+            if ($existingJadwal) {
+                $existingJadwal->update([
+                    "jadwal_tanggal" => $tanggalHariIni,
+                    "jadwal_jam_{$rentangWaktu}" => $jadwalJam[$rentangWaktu],
+                    "updated_at" => now()
+                ]);
+                $this->{$rentangWaktu} = 'YA';
+                $this->{"waktu_scan_{$rentangWaktu}"} = $jadwalJam[$rentangWaktu];
+            } else {
+                Jadwal::create([
+                    'jadwal_tanggal' => $tanggalHariIni,
+                    'jadwal_cek_subuh' => $jadwalCek['subuh'],
+                    'jadwal_cek_pagi' => $jadwalCek['pagi'],
+                    'jadwal_cek_siang' => $jadwalCek['siang'],
+                    'jadwal_cek_malam' => $jadwalCek['malam'],
+                    'jadwal_jam_subuh' => $jadwalJam['subuh'],
+                    'jadwal_jam_pagi' => $jadwalJam['pagi'],
+                    'jadwal_jam_siang' => $jadwalJam['siang'],
+                    'jadwal_jam_malam' => $jadwalJam['malam'],
+                    'jadwal_status' => 'Active',
+                    'data_id' => $data->id,
+                    'periode_id' => NULL,
+                    'created_at' => now(),
+                    'updated_at' => now()
+                ]);
 
-            $jadwal->create([
-                'jadwal_tanggal' => $tanggalHariIni,
-                'jadwal_cek_subuh' => $this->subuh,
-                'jadwal_cek_pagi' => $this->pagi,
-                'jadwal_cek_siang' => $this->siang,
-                'jadwal_cek_malam' => $this->malam,
-                'jadwal_jam_subuh' => $this->waktu_scan_subuh,
-                'jadwal_jam_pagi' => $this->waktu_scan_pagi,
-                'jadwal_jam_siang' => $this->waktu_scan_siang,
-                'jadwal_jam_malam' => $this->waktu_scan_malam,
-                'jadwal_status' => 'Active',
-                'data_id' => $data->id,
-                'periode_id' => NULL,
-                'created_at' => now(),
-                'updated_at' => now()
-            ]);
+                $this->{$rentangWaktu} = 'YA';
+                $this->{"waktu_scan_{$rentangWaktu}"} = $jadwalJam[$rentangWaktu];
+            }
         } else {
             $this->nama = "Data tidak Valid!";
         }
