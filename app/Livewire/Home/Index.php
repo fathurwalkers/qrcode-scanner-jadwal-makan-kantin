@@ -67,14 +67,14 @@ class Index extends Component
                 'malam' => null
             ];
             $rentangWaktu = '';
-            if ($currentHour >= 4 && $currentHour < 9) {
-                $rentangWaktu = 'pagi';
-            } elseif ($currentHour >= 9 && $currentHour < 15) {
-                $rentangWaktu = 'siang';
-            } elseif ($currentHour >= 15 && $currentHour < 19) {
-                $rentangWaktu = 'malam';
-            } elseif ($currentHour >= 0 && $currentHour < 4 || $currentHour >= 19 && $currentHour < 24) {
+            if ($currentHour >= 4 && $currentHour < 6) {
                 $rentangWaktu = 'subuh';
+            } elseif ($currentHour >= 6 && $currentHour < 9) {
+                $rentangWaktu = 'pagi';
+            } elseif ($currentHour >= 11 && $currentHour < 13) {
+                $rentangWaktu = 'siang';
+            } elseif (($currentHour == 16 && $now->minute >= 30) || ($currentHour >= 17 && $currentHour < 19)) {
+                $rentangWaktu = 'malam';
             }
             $jadwalCek[$rentangWaktu] = 'YA';
             $jadwalJam[$rentangWaktu] = $now->toTimeString();

@@ -268,7 +268,7 @@
                 const endTime = new Date();
 
                 // Rentang waktu SIANG: 11:30 AM - 13:00 PM WITA
-                startTime.setHours(11, 30, 0); // Set ke 11:30 AM WITA
+                startTime.setHours(11, 0, 0); // Set ke 11:30 AM WITA
                 endTime.setHours(13, 0, 0); // Set ke 01:00 PM WITA
 
                 runCountdown(countdownElement, startTime, endTime);

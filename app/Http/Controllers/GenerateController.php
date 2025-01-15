@@ -396,13 +396,36 @@ class GenerateController extends Controller
 
     public function generate_qr()
     {
-        $data = Data::where('id', '>=', 300)->get(); // Ambil data dengan ID >=
-        foreach($data as $dt) {
+        $data = Data::all(); // Mengambil semua data
+        foreach ($data as $dt) {
+            // Generate QR code
             $qr = QrCode::format('png')->generate($dt->data_qr);
-            $qrImageName = $dt->data_nama . '.png';
-            $store_qr = Storage::put('public/qr/' . $qrImageName, $qr);
+
+            // Nama file QR code
+            $qrImageName = $dt->data_nama . ' - ' . '(' . $dt->data_no_id_card . ')' . '.png';
+
+            // Path untuk file QR code di folder /public/qr
+            $qrPath = public_path('qr/' . $qrImageName);
+
+            // Cek apakah file sudah ada
+            if (file_exists($qrPath)) {
+                echo "File $qrImageName sudah ada, skip...\n <br />";
+                \Log::info('File: ' . $qrImageName . ' sudah ada, skip...');
+                continue; // Skip ke data berikutnya
+            }
+
+            // Simpan file jika belum ada
+            $saved = file_put_contents($qrPath, $qr);
+            if ($saved) {
+                echo "Berhasil generate QR untuk: $dt->data_nama\n";
+                \Log::info('File: ' . $qrImageName . ' berhasil di-generate!');
+            } else {
+                echo "Gagal menyimpan QR untuk: $dt->data_nama\n";
+                \Log::error('File: ' . $qrImageName . ' gagal di-save...');
+            }
         }
-        \Log::info("Berhasil generate QR untuk: $dt->data_nama");
+
+        echo "BERHASIL GENERATE QR!";
     }
 
     public function test_qr()
