@@ -140,7 +140,7 @@ class DatabaseSeeder extends Seeder
             ["116","LA SOPE","KPA 00208","WAREHOUSE & ADMIN","WORKSHOP ALAT BERAT","OPERATOR LOADER"],
             ["117","RAHMAN BAYDILLAH","KPA 00210","WAREHOUSE & ADMIN","WORKSHOP ALAT BERAT","OPERATOR EXCAVATOR"],
             ["118","LA TONDI","KPA 00157","PRODUKSI","BOILER","BOILER OPERATOR"],
-            ["119","SAFRIN Genset","KPA 00183","PRODUKSI","ELECTRIK","ELETRICAL MAINTENANCE OPERATOR"],
+            ["119","SAFRIN","KPA 00183","PRODUKSI","ELECTRIK","ELETRICAL MAINTENANCE OPERATOR"],
             ["120","IDRIS","KPA 00211","WAREHOUSE & ADMIN","WORKSHOP ALAT BERAT","MAINTENANCE ALAT BERAT"],
             ["121","ROJALI","KPA  00213","PRODUKSI","PABRIKASI","WELDER"],
             ["122","YUGI","KPA 00214","PRODUKSI","GRUB B","THICKENER"],
@@ -156,7 +156,7 @@ class DatabaseSeeder extends Seeder
             ["132","RAMADAN","KPA 00229","PRODUKSI","GRUB C","CRUSHER 3"],
             ["133","RIDWAN","KPA 00230","PRODUKSI","GRUB B","THICKENER"],
             ["134","ARJUN","KPA 00232","PRODUKSI","GRIB C","VIBRATOR"],
-            ["135","DANDI SOPIR","KPA 00236","HUMAN CAPITAL & GA","SOPIR","SOPIR"],
+            ["135","DANDI","KPA 00236","HUMAN CAPITAL & GA","SOPIR","SOPIR"],
             ["136","SUHARNI","KPA 00238","HUMAN CAPITAL & GA","ADMIN","ADMIN UMUM"],
             ["137","M REZA","KPA 00240","PRODUKSI","GRUB A","CONVEYOR 2 ARAH"],
             ["138","ISWANTO RESTU WIBOWO","KPA 00241","HUMAN CAPITAL & GA","SECURITY","ANGGOTA SECURITY"],
@@ -273,10 +273,10 @@ class DatabaseSeeder extends Seeder
             ["249","HESTI","KPA 00434","WAREHOUSE & ADMIN","STOREHOUSE","ADMIN GUDANG"],
             ["250","MUHAMMAD FAREL","KPA 00435","PRODUKSI","GRUB B","CRUSHER BARU"],
             ["251","YONI","KPA 00436","PRODUKSI","GRUB C","CRUSHER 3"],
-            ["252","SAFRIN WAOLEONA","KPA 00437","PRODUKSI","GRUB A","CRUSHER BARU"],
+            ["252","SAFRIN","KPA 00437","PRODUKSI","GRUB A","CRUSHER BARU"],
             ["253","AAN","KPA 00438","PRODUKSI","GRUB A","CRUSHER BARU"],
             ["254","LM.RIVAN IFAN VERDIANSYAH","KPA 00439","PRODUKSI","GRUB C","CRUSHER BARU"],
-            ["255","SAFRIN LAWELE","KPA 00440","PRODUKSI","GRUB B","CRUSHER BARU"],
+            ["255","SAFRIN","KPA 00440","PRODUKSI","GRUB B","CRUSHER BARU"],
             ["256","DEWANTO","KPA 00441","PRODUKSI","GRUB B","CRUSHER BARU"],
             ["257","KASRI","KPA 00443","PRODUKSI","GRUB C","CRUSHER BARU"],
             ["258","RAMIN","KPA 00444","PRODUKSI","MEKANIK","MECHANICAL MAINTENANCE"],
@@ -377,7 +377,10 @@ class DatabaseSeeder extends Seeder
         foreach ($data as $d) {
             $dat = new Data;
             $qr_raw = $d[1] . "#" . $d[2];
-            $qr = Crypt::encryptString($qr_raw);
+            $key = 'fathur-ganteng';
+            $iv = random_bytes(16);
+            $encrypted = openssl_encrypt($qr_raw, 'aes-256-cbc', $key, 0, $iv);
+            $encryptedData = base64_encode($encrypted . '::' . base64_encode($iv));
             $save_data = $dat->create([
                 'data_nama' => $d[1],
                 'data_no_id_card' => $d[2],
@@ -385,7 +388,7 @@ class DatabaseSeeder extends Seeder
                 'data_dept' => $d[4],
                 'data_jabatan' => $d[5],
                 'data_kategori' => "MESS",
-                'data_qr' => $qr,
+                'data_qr' => $encryptedData,
                 'created_at' => now(),
                 'updated_at' => now()
             ]);

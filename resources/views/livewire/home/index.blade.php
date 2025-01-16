@@ -45,6 +45,16 @@
         </div>
     </div>
 
+    <div class="row my-2">
+        <div class="col-sm-12 col-md-12 col-lg-12">
+            @if (session('ok'))
+                <div class="alert alert-success">
+                    {{ session('ok') }}
+                </div>
+            @endif
+        </div>
+    </div>
+
     <div class="row mt-3">
         <div class="col-sm-12 col-md-12 col-lg-12">
             <table class="table table-bordered">
@@ -61,7 +71,8 @@
                 <tbody>
                     <tr>
                         <td class="text-center text-middle" width="25%">
-                            {{ $nama }}
+                            {{ $nama }} <br />
+                            {{ $no_karyawan }} <br />
                         </td>
                         <td class="text-center text-middle" width="15%">
                             {{ $tanggalwaktu }}
