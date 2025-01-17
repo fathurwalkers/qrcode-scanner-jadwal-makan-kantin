@@ -6,11 +6,17 @@ use App\Http\Controllers\GenerateController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\HomeController;
 use App\Livewire\Home\Index as HomeIndex;
+use App\Livewire\Dashboard\Index as DashboardIndex;
 
 
 Route::group(['prefix' => '/'], function () {
     // Index Route
     Route::get('/', HomeIndex::class, 'index')->name('home');
+});
+
+Route::group(['prefix' => '/dashboard'], function () {
+    // Index Route
+    Route::get('/', DashboardIndex::class, 'index')->name('dashboard');
 });
 
 Route::get('/test-qr', [GenerateController::class, 'test_qr'])->name('test-qr');
