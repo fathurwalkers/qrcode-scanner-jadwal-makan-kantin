@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire\Dashboard;
+namespace App\Livewire\Dashboard\Jadwal;
 
 use Livewire\Component;
 use Illuminate\Support\Facades\Hash;
@@ -20,14 +20,17 @@ use Illuminate\Support\Facades\Crypt;
 
 class Index extends Component
 {
-    public $title = 'Dashboard Manajemen Penjadwalan';
-
+    public $title = 'Jadwal';
     public $jadwal;
+
+    public function mount()
+    {
+        $this->jadwal = Jadwal::latest()->get();
+    }
 
     public function render()
     {
-        $this->jadwal = Jadwal::lastest();
-        return view('livewire.dashboard.index')
+        return view('livewire.dashboard.jadwal.index')
             ->layout('layouts.dashboard-layout', [
                 'title' => $this->title,
             ]);

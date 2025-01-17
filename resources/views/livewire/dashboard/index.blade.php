@@ -39,7 +39,5 @@
                 </div>
             </div>
         </div>
-
     </div>
-    <!---Container Fluid-->
 </div>
