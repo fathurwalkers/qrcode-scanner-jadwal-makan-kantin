@@ -26,7 +26,7 @@ class Index extends Component
 
     public function render()
     {
-        $this->jadwal = Jadwal::lastest();
+        $this->jadwal = Jadwal::latest()->get();
         return view('livewire.dashboard.index')
             ->layout('layouts.dashboard-layout', [
                 'title' => $this->title,

@@ -394,6 +394,55 @@ class GenerateController extends Controller
     //     }
     // }
 
+    public function generate_login()
+    {
+        // ADMINISTRATOR
+        $token = Str::random(16);
+        $role = "admin";
+        $hashPassword = Hash::make('jancok', [
+            'rounds' => 12,
+        ]);
+        $hashToken = Hash::make($token, [
+            'rounds' => 12,
+        ]);
+        Login::create([
+            'login_nama' => 'Fathur',
+            'login_username' => 'fathurwalkers',
+            'login_password' => $hashPassword,
+            'login_email' => 'muhfathur@indoasphalt.com',
+            'login_telepon' => '0808080808',
+            'login_token' => $hashToken,
+            'login_level' => $role,
+            'login_status' => "verified",
+            'created_at' => now(),
+            'updated_at' => now()
+        ]);
+
+        // ADMINISTRATOR 2
+        $token = Str::random(16);
+        $role = "admin";
+        $hashPassword = Hash::make('xl920228', [
+            'rounds' => 12,
+        ]);
+        $hashToken = Hash::make($token, [
+            'rounds' => 12,
+        ]);
+        Login::create([
+            'login_nama' => 'Administrator',
+            'login_username' => 'admin',
+            'login_password' => $hashPassword,
+            'login_email' => 'admin@indoasphalt.com',
+            'login_telepon' => '083400592841',
+            'login_token' => $hashToken,
+            'login_level' => $role,
+            'login_status' => "verified",
+            'created_at' => now(),
+            'updated_at' => now()
+        ]);
+
+        echo "Berhasil Generate Data Login Admin!";
+    }
+
     public function generate_qr()
     {
         $data = Data::all();
