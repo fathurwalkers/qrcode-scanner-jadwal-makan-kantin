@@ -1,4 +1,18 @@
 <div>
+    @push('css')
+    <style>
+        .table {
+            width: 100%;
+            margin-bottom: 1rem;
+            color: #000000;
+        }
+
+        .table-bordered td, .table-bordered th, .table-bordered tr {
+            border: 1px solid #000000;
+        }
+    </style>
+    @endpush
+
     <div class="container-fluid" id="container-wrapper">
         <div class="d-sm-flex align-items-center justify-content-between mb-1">
             <h1 class="h3 mb-0 text-gray-800">{{ $title ?? 'Dashboard' }}</h1>
@@ -13,7 +27,7 @@
             <div class="card-body">
                 <div class="row mt-3">
                     <div class="col-sm-12 col-md-12 col-lg-12">
-                        <table class="table table-bordered">
+                        <table class="table table-bordered border-primary">
                             <thead>
                                 <tr>
                                     <th scope="col" class="text-center">Nama</th>

@@ -14,6 +14,7 @@
     <link href="{{ asset('assets/ruangadmin/') }}/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet"
         type="text/css">
     <link href="{{ asset('assets/ruangadmin/') }}/css/ruang-admin.min.css" rel="stylesheet">
+    @stack('css')
 </head>
 
 <body id="page-top">
@@ -104,6 +105,7 @@
     <script src="{{ asset('assets/ruangadmin/') }}/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
     <script src="{{ asset('assets/ruangadmin/') }}/vendor/jquery-easing/jquery.easing.min.js"></script>
     <script src="{{ asset('assets/ruangadmin/') }}/js/ruang-admin.min.js"></script>
+    @stack('js')
 
 </body>
 
