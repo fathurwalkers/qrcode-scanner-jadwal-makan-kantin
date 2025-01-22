@@ -44,20 +44,20 @@
                                 @foreach($jadwal as $jd)
                                     <tr>
                                         <td class="text-center text-middle" width="10%">
-                                            {{ $jadwal->data->data_nama }} <br />
-                                            {{ $jadwal->data->data_no_id_card }} <br />
+                                            {{ $jd->data->data_nama }} <br />
+                                            {{ $jd->data->data_no_id_card }} <br />
                                         </td>
                                         <td class="text-center text-middle" width="10%">
-                                            {{ $jadwal->data->data_divisi }} <br />
+                                            {{ $jd->data->data_divisi }} <br />
                                         </td>
                                         <td class="text-center text-middle" width="10%">
-                                            {{ $jadwal->data->data_jabatan }} <br />
+                                            {{ $jd->data->data_jabatan }} <br />
                                         </td>
                                         <td class="text-center text-middle" width="10%">
-                                            {{ $jadwal->jadwal_tanggal }}
+                                            {{ $jd->jadwal_tanggal }}
                                         </td>
                                         <td class="text-center" width="15%">
-                                            @switch($jadwal->jadwal_cek_pagi)
+                                            @switch($jd->jadwal_cek_pagi)
                                                 @case('YA')
                                                     &#10004;
                                                 @break
@@ -67,11 +67,11 @@
                                                 @break
                                             @endswitch
                                             <p class="waktu-scan">
-                                                Waktu Scan : {{ $jadwal->jadwal_jam_pagi }}
+                                                Waktu Scan : {{ $jd->jadwal_jam_pagi }}
                                             </p>
                                         </td>
                                         <td class="text-center" width="15%">
-                                            @switch($jadwal->jadwal_cek_siang)
+                                            @switch($jd->jadwal_cek_siang)
                                                 @case('YA')
                                                     &#10004;
                                                 @break
@@ -81,11 +81,11 @@
                                                 @break
                                             @endswitch
                                             <p class="waktu-scan">
-                                                Waktu Scan : {{ $jadwal->jadwal_jam_siang }}
+                                                Waktu Scan : {{ $jd->jadwal_jam_siang }}
                                             </p>
                                         </td>
                                         <td class="text-center" width="15%">
-                                            @switch($jadwal->jadwal_cek_malam)
+                                            @switch($jd->jadwal_cek_malam)
                                                 @case('YA')
                                                     &#10004;
                                                 @break
@@ -95,11 +95,11 @@
                                                 @break
                                             @endswitch
                                             <p class="waktu-scan">
-                                                Waktu Scan : {{ $jadwal->jadwal_jam_malam }}
+                                                Waktu Scan : {{ $jd->jadwal_jam_malam }}
                                             </p>
                                         </td>
                                         <td class="text-center" width="15%">
-                                            @switch($jadwal->jadwal_cek_subuh)
+                                            @switch($jd->jadwal_cek_subuh)
                                                 @case('YA')
                                                     &#10004;
                                                 @break
@@ -109,7 +109,7 @@
                                                 @break
                                             @endswitch
                                             <p class="waktu-scan">
-                                                Waktu Scan : {{ $jadwal->jadwal_jam_subuh }}
+                                                Waktu Scan : {{ $jd->jadwal_jam_subuh }}
                                             </p>
                                         </td>
                                     </tr>
