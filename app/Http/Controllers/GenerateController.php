@@ -10,6 +10,7 @@ use Faker\Factory as Faker;
 use Illuminate\Support\Arr;
 use App\Models\Login;
 use App\Models\Data;
+use App\Models\Jadwal;
 use App\Models\Periode;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
@@ -70,12 +71,12 @@ class GenerateController extends Controller
 
     public function generateRandomTime($startHour, $startMinute, $endHour, $endMinute)
     {
-        $startTime = $startHour * 60 + $startMinute; // Waktu awal dalam menit
-        $endTime = $endHour * 60 + $endMinute; // Waktu akhir dalam menit
-        $randomMinuteOfDay = rand($startTime, $endTime); // Acak waktu dalam rentang menit
-        $randomHour = intdiv($randomMinuteOfDay, 60); // Konversi ke jam
-        $randomMinute = $randomMinuteOfDay % 60; // Konversi ke menit
-        return sprintf('%02d:%02d:00', $randomHour, $randomMinute); // Format HH:MM:SS
+        $startTime = $startHour * 60 + $startMinute;
+        $endTime = $endHour * 60 + $endMinute;
+        $randomMinuteOfDay = rand($startTime, $endTime);
+        $randomHour = intdiv($randomMinuteOfDay, 60);
+        $randomMinute = $randomMinuteOfDay % 60;
+        return sprintf('%02d:%02d:00', $randomHour, $randomMinute);
     }
 
     public function generate_jadwal()
@@ -94,13 +95,9 @@ class GenerateController extends Controller
         ];
         for ($i = 1; $i <= 20; $i++) {
             $data = $allData->random();
-            $selectedRange = array_rand($timeRanges);
-            $randomTime = $this->generateRandomTime(
-                $timeRanges[$selectedRange]['startHour'],
-                $timeRanges[$selectedRange]['startMinute'],
-                $timeRanges[$selectedRange]['endHour'],
-                $timeRanges[$selectedRange]['endMinute']
-            );
+            $jadwalExisting = Jadwal::where('data_id', $data->id)
+                ->whereDate('jadwal_tanggal', $tanggalHariIni)
+                ->first();
             $jadwalJam = [
                 'subuh' => null,
                 'pagi' => null,
@@ -113,6 +110,31 @@ class GenerateController extends Controller
                 'siang' => 'TIDAK',
                 'malam' => 'TIDAK'
             ];
+            $selectedRange = array_rand($timeRanges);
+            $randomTime = $this->generateRandomTime(
+                $timeRanges[$selectedRange]['startHour'],
+                $timeRanges[$selectedRange]['startMinute'],
+                $timeRanges[$selectedRange]['endHour'],
+                $timeRanges[$selectedRange]['endMinute']
+            );
+            if ($jadwalExisting) {
+                echo "JADWAL MAKAN" . $data->data_nama . " SUDAH ADA!, Pada jam " . $jadwalExisting . "<br />";
+                $existingRanges = [
+                    'subuh' => $jadwalExisting->jadwal_cek_subuh,
+                    'pagi' => $jadwalExisting->jadwal_cek_pagi,
+                    'siang' => $jadwalExisting->jadwal_cek_siang,
+                    'malam' => $jadwalExisting->jadwal_cek_malam,
+                ];
+                while ($existingRanges[$selectedRange] === 'YA') {
+                    $selectedRange = array_rand($timeRanges);
+                    $randomTime = $this->generateRandomTime(
+                        $timeRanges[$selectedRange]['startHour'],
+                        $timeRanges[$selectedRange]['startMinute'],
+                        $timeRanges[$selectedRange]['endHour'],
+                        $timeRanges[$selectedRange]['endMinute']
+                    );
+                }
+            }
             $jadwalJam[$selectedRange] = $randomTime;
             $jadwalCek[$selectedRange] = 'YA';
             $jadwal = new Jadwal;
@@ -132,9 +154,8 @@ class GenerateController extends Controller
                 'created_at' => now(),
                 'updated_at' => now(),
             ]);
-            dd($save_jadwal);
             $save_jadwal->save();
-            echo "Data jadwal untuk {$data->data_nama} berhasil dibuat pada rentang waktu {$selectedRange} dengan waktu {$randomTime}.\n";
+            echo "Data jadwal untuk {$data->data_nama} berhasil dibuat pada rentang waktu {$selectedRange} dengan waktu {$randomTime}. <br /><br />";
         }
     }
 

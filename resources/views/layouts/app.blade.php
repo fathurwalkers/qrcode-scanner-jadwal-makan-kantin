@@ -54,6 +54,7 @@
             vertical-align: middle !important;
         }
     </style>
+    @livewireStyles
     @push('css')
 </head>
 
@@ -86,6 +87,7 @@
     <script src="{{ asset('assets/jquery') }}/jquery.min.js"></script>
     <script src="{{ asset('assets/bootstrap4/js') }}/bootstrap.min.js"></script>
     @stack('js')
+    @livewireScripts
 </body>
 
 </html>

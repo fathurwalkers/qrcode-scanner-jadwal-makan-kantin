@@ -14,28 +14,27 @@ use App\Models\Data;
 use App\Models\Periode;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Pagination\Paginator;
+use Illuminate\Support\ServiceProvider;
+use Illuminate\Pagination\LengthAwarePaginator;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Crypt;
+use Livewire\WithPagination;
 
 class Index extends Component
 {
+    use WithPagination;
     public $title = 'Jadwal';
-    public $jadwal;
-
-    public function mount()
-    {
-        $this->jadwal = Jadwal::latest()->get();
-    }
-
     public function render()
     {
-        return view('livewire.dashboard.jadwal.index')
+        return view('livewire.dashboard.jadwal.index', [
+            'jadwal' => Jadwal::latest('updated_at')->paginate(10),
+        ])
             ->layout('layouts.dashboard-layout', [
                 'title' => $this->title,
             ]);
     }
-
     public function layoutData()
     {
         return [
