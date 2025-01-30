@@ -81,35 +81,30 @@ class GenerateController extends Controller
 
     public function generate_jadwal()
     {
-        $tanggalHariIni = '2025-01-20';
+        $tanggalHariIni = '2025-01-30';
         $allData = Data::all();
         if ($allData->isEmpty()) {
             echo "Tidak ada data di tabel Data.";
             return;
         }
+
         $timeRanges = [
             'subuh' => ['startHour' => 3, 'startMinute' => 0, 'endHour' => 4, 'endMinute' => 40],
             'pagi' => ['startHour' => 6, 'startMinute' => 0, 'endHour' => 8, 'endMinute' => 30],
             'siang' => ['startHour' => 11, 'startMinute' => 0, 'endHour' => 12, 'endMinute' => 59],
             'malam' => ['startHour' => 16, 'startMinute' => 30, 'endHour' => 18, 'endMinute' => 59],
         ];
+
         for ($i = 1; $i <= 20; $i++) {
-            $data = $allData->random();
+            // $data = $allData->random();
+            $data = Data::find(184);
+
+            // Cek apakah sudah ada jadwal untuk data_id pada tanggal yang sama
             $jadwalExisting = Jadwal::where('data_id', $data->id)
                 ->whereDate('jadwal_tanggal', $tanggalHariIni)
                 ->first();
-            $jadwalJam = [
-                'subuh' => null,
-                'pagi' => null,
-                'siang' => null,
-                'malam' => null
-            ];
-            $jadwalCek = [
-                'subuh' => 'TIDAK',
-                'pagi' => 'TIDAK',
-                'siang' => 'TIDAK',
-                'malam' => 'TIDAK'
-            ];
+
+            // Tentukan waktu random untuk satu kategori (subuh, pagi, siang, malam)
             $selectedRange = array_rand($timeRanges);
             $randomTime = $this->generateRandomTime(
                 $timeRanges[$selectedRange]['startHour'],
@@ -117,45 +112,39 @@ class GenerateController extends Controller
                 $timeRanges[$selectedRange]['endHour'],
                 $timeRanges[$selectedRange]['endMinute']
             );
+
             if ($jadwalExisting) {
-                echo "JADWAL MAKAN" . $data->data_nama . " SUDAH ADA!, Pada jam " . $jadwalExisting . "<br />";
-                $existingRanges = [
-                    'subuh' => $jadwalExisting->jadwal_cek_subuh,
-                    'pagi' => $jadwalExisting->jadwal_cek_pagi,
-                    'siang' => $jadwalExisting->jadwal_cek_siang,
-                    'malam' => $jadwalExisting->jadwal_cek_malam,
-                ];
-                while ($existingRanges[$selectedRange] === 'YA') {
-                    $selectedRange = array_rand($timeRanges);
-                    $randomTime = $this->generateRandomTime(
-                        $timeRanges[$selectedRange]['startHour'],
-                        $timeRanges[$selectedRange]['startMinute'],
-                        $timeRanges[$selectedRange]['endHour'],
-                        $timeRanges[$selectedRange]['endMinute']
-                    );
+                // Jika jadwal sudah ada, update data yang masih "TIDAK"
+                if ($jadwalExisting["jadwal_cek_{$selectedRange}"] === 'TIDAK') {
+                    $jadwalExisting->update([
+                        "jadwal_cek_{$selectedRange}" => 'YA',
+                        "jadwal_jam_{$selectedRange}" => $randomTime,
+                        'updated_at' => now(),
+                    ]);
+                    echo "Jadwal untuk {$data->data_nama} diperbarui pada {$selectedRange} dengan waktu {$randomTime}. <br />";
+                } else {
+                    echo "Jadwal untuk {$data->data_nama} sudah ada pada {$selectedRange}. Tidak ada perubahan. <br />";
                 }
+            } else {
+                // Jika belum ada jadwal, buat baru
+                Jadwal::create([
+                    'jadwal_tanggal' => $tanggalHariIni,
+                    'jadwal_cek_subuh' => ($selectedRange === 'subuh') ? 'YA' : 'TIDAK',
+                    'jadwal_cek_pagi' => ($selectedRange === 'pagi') ? 'YA' : 'TIDAK',
+                    'jadwal_cek_siang' => ($selectedRange === 'siang') ? 'YA' : 'TIDAK',
+                    'jadwal_cek_malam' => ($selectedRange === 'malam') ? 'YA' : 'TIDAK',
+                    'jadwal_jam_subuh' => ($selectedRange === 'subuh') ? $randomTime : null,
+                    'jadwal_jam_pagi' => ($selectedRange === 'pagi') ? $randomTime : null,
+                    'jadwal_jam_siang' => ($selectedRange === 'siang') ? $randomTime : null,
+                    'jadwal_jam_malam' => ($selectedRange === 'malam') ? $randomTime : null,
+                    'jadwal_status' => 'Active',
+                    'data_id' => $data->id,
+                    'periode_id' => null,
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ]);
+                echo "Data jadwal untuk {$data->data_nama} berhasil dibuat pada rentang waktu {$selectedRange} dengan waktu {$randomTime}. <br />";
             }
-            $jadwalJam[$selectedRange] = $randomTime;
-            $jadwalCek[$selectedRange] = 'YA';
-            $jadwal = new Jadwal;
-            $save_jadwal = $jadwal->create([
-                'jadwal_tanggal' => $tanggalHariIni,
-                'jadwal_cek_subuh' => $jadwalCek['subuh'],
-                'jadwal_cek_pagi' => $jadwalCek['pagi'],
-                'jadwal_cek_siang' => $jadwalCek['siang'],
-                'jadwal_cek_malam' => $jadwalCek['malam'],
-                'jadwal_jam_subuh' => $jadwalJam['subuh'],
-                'jadwal_jam_pagi' => $jadwalJam['pagi'],
-                'jadwal_jam_siang' => $jadwalJam['siang'],
-                'jadwal_jam_malam' => $jadwalJam['malam'],
-                'jadwal_status' => 'Active',
-                'data_id' => $data->id,
-                'periode_id' => null,
-                'created_at' => now(),
-                'updated_at' => now(),
-            ]);
-            $save_jadwal->save();
-            echo "Data jadwal untuk {$data->data_nama} berhasil dibuat pada rentang waktu {$selectedRange} dengan waktu {$randomTime}. <br /><br />";
         }
     }
 
