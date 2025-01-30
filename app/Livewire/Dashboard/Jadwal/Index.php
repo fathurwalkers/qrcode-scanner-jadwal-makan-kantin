@@ -29,7 +29,7 @@ class Index extends Component
     public function render()
     {
         return view('livewire.dashboard.jadwal.index', [
-            'jadwal' => Jadwal::latest('updated_at')->paginate(10),
+            'jadwal' => Jadwal::latest('updated_at')->paginate(5),
         ])
             ->layout('layouts.dashboard-layout', [
                 'title' => $this->title,
