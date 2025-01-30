@@ -96,15 +96,10 @@ class GenerateController extends Controller
         ];
 
         for ($i = 1; $i <= 20; $i++) {
-            // $data = $allData->random();
             $data = Data::find(184);
-
-            // Cek apakah sudah ada jadwal untuk data_id pada tanggal yang sama
             $jadwalExisting = Jadwal::where('data_id', $data->id)
                 ->whereDate('jadwal_tanggal', $tanggalHariIni)
                 ->first();
-
-            // Tentukan waktu random untuk satu kategori (subuh, pagi, siang, malam)
             $selectedRange = array_rand($timeRanges);
             $randomTime = $this->generateRandomTime(
                 $timeRanges[$selectedRange]['startHour'],
@@ -114,7 +109,6 @@ class GenerateController extends Controller
             );
 
             if ($jadwalExisting) {
-                // Jika jadwal sudah ada, update data yang masih "TIDAK"
                 if ($jadwalExisting["jadwal_cek_{$selectedRange}"] === 'TIDAK') {
                     $jadwalExisting->update([
                         "jadwal_cek_{$selectedRange}" => 'YA',
@@ -126,7 +120,6 @@ class GenerateController extends Controller
                     echo "Jadwal untuk {$data->data_nama} sudah ada pada {$selectedRange}. Tidak ada perubahan. <br />";
                 }
             } else {
-                // Jika belum ada jadwal, buat baru
                 Jadwal::create([
                     'jadwal_tanggal' => $tanggalHariIni,
                     'jadwal_cek_subuh' => ($selectedRange === 'subuh') ? 'YA' : 'TIDAK',
