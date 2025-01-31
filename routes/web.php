@@ -8,6 +8,7 @@ use App\Http\Controllers\HomeController;
 use App\Livewire\Home\Index as HomeIndex;
 use App\Livewire\Dashboard\Index as DashboardIndex;
 use App\Livewire\Dashboard\Jadwal\Index as DashboardJadwalIndex;
+use App\Livewire\Dashboard\Karyawan\Index as DashboardKaryawanIndex;
 
 
 Route::group(['prefix' => '/'], function () {
@@ -19,6 +20,7 @@ Route::group(['prefix' => '/dashboard'], function () {
     // Index Route
     Route::get('/', DashboardIndex::class, 'index')->name('dashboard');
     Route::get('/jadwal', DashboardJadwalIndex::class, 'index')->name('dashboard-jadwal');
+    Route::get('/data-karyawan', DashboardKaryawanIndex::class, 'index')->name('dashboard-data-karyawan');
 });
 
 Route::get('/test-qr', [GenerateController::class, 'test_qr'])->name('test-qr');
