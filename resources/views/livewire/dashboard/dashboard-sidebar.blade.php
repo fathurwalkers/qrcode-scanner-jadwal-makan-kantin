@@ -1,5 +1,5 @@
 <div>
-    <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
+    <a class="sidebar-brand d-flex align-items-center justify-content-center" href="{{ route('dashboard') }}">
         <div class="sidebar-brand-icon">
             <img src="{{ asset('assets/ruangadmin/') }}/img/logo/logo2.png">
         </div>
@@ -7,7 +7,7 @@
     </a>
     <hr class="sidebar-divider my-0">
     <li class="nav-item">
-        <a class="nav-link" href="index.html">
+        <a class="nav-link" href="{{ route('dashboard') }}">
             <i class="fas fa-fw fa-tachometer-alt"></i>
             <span>Dashboard</span></a>
     </li>
