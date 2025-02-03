@@ -5,25 +5,27 @@
             width: 100%;
             margin-bottom: 1rem;
             color: #000000;
+            text-align: center;
         }
 
-        .table-bordered td, .table-bordered th, .table-bordered tr {
+        .table-bordered td, .table-bordered th {
             border: 1px solid #000000;
+            vertical-align: middle !important;
         }
 
         .table-compact {
             font-size: 12px;
         }
+
         .table-compact th, .table-compact td {
-            padding: 4px;
+            padding: 8px;
             margin: 0;
         }
-        .table-compact p {
-            margin: 0;
-            font-size: 10px;
-        }
-        .waktu-scan {
-            font-size: 10px;
+
+        .btn-group {
+            display: flex;
+            justify-content: center;
+            gap: 5px;
         }
     </style>
     @endpush
@@ -53,7 +55,7 @@
                                             <th scope="col" class="text-center">Departemen</th>
                                             <th scope="col" class="text-center">Jabatan</th>
                                             <th scope="col" class="text-center">Kategori</th>
-                                            <th scope="col" class="text-center">QR Code</th>
+                                            {{-- <th scope="col" class="text-center">QR Code</th> --}}
                                             <th scope="col" class="text-center">Opsi</th>
                                         </tr>
                                     </thead>
@@ -71,17 +73,19 @@
                                                 @php
                                                 $qrname = strtoupper($data->data_nama) . " - " . "(" . $data->data_no_id_card . ")";
                                                 @endphp
-                                                <td class="text-center">
+                                                {{-- <td class="text-center">
                                                     @if($data->data_qr)
-                                                        <img src="{{ asset('assets') }}/qr/{{$qrname}}.png" width="50">
+                                                        <img src="{{ asset('/') }}qr/{{$qrname}}.png" width="50">
                                                     @else
                                                         <span class="text-muted">Tidak Ada</span>
                                                     @endif
-                                                </td>
+                                                </td> --}}
                                                 <td class="text-center">
-                                                    <button class="btn btn-sm btn-info" wire:click="lihat({{ $data->id }})">Lihat</button>
-                                                    <button class="btn btn-sm btn-warning" wire:click="ubah({{ $data->id }})">Ubah</button>
-                                                    <button class="btn btn-sm btn-danger" wire:click="hapus({{ $data->id }})" onclick="return confirm('Yakin ingin menghapus?')">Hapus</button>
+                                                    <div class="btn-group">
+                                                        <button class="btn btn-sm btn-info" wire:click="lihat({{ $data->id }})">Lihat</button>
+                                                        <button class="btn btn-sm btn-warning" wire:click="ubah({{ $data->id }})">Ubah</button>
+                                                        <button class="btn btn-sm btn-danger" wire:click="hapus({{ $data->id }})" onclick="return confirm('Yakin ingin menghapus?')">Hapus</button>
+                                                    </div>
                                                 </td>
                                             </tr>
                                         @endforeach

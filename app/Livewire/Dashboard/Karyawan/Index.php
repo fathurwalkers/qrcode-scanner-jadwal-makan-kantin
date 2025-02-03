@@ -30,7 +30,7 @@ class Index extends Component
     public function render()
     {
         return view('livewire.dashboard.karyawan.index', [
-            'karyawan' => Data::latest('updated_at')->paginate(10),
+            'karyawan' => Data::latest('updated_at')->paginate(5),
         ])->layout('layouts.dashboard-layout', [
             'title' => $this->title,
         ]);
