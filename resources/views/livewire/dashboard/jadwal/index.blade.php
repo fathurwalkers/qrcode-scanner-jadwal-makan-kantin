@@ -41,9 +41,13 @@
 
         <div class="card">
             <div class="card-body">
+                <div class="mb-3 d-flex justify-content-between">
+                    <input type="date" class="form-control w-25" wire:model="tanggalFilter">
+                    <button class="btn btn-primary" wire:click="$refresh">Refresh</button>
+                </div>
                 <div class="row mt-1">
                     <div class="col-sm-12 col-md-12 col-lg-12">
-                        <div wire:poll.5s>
+                        <div wire:poll.keep-alive>
                             <div class="table-responsive">
                                 <table class="table table-bordered border-primary table-compact">
                                     <thead>
@@ -91,9 +95,11 @@
                                                             &#10006;
                                                         @break
                                                     @endswitch
-                                                    <p class="waktu-scan">
-                                                        Waktu Scan : {{ $jd->jadwal_jam_pagi }}
-                                                    </p>
+                                                    @if($jd->jadwal_cek_pagi == "YA")
+                                                        <p class="waktu-scan">
+                                                            Waktu Scan : {{ $jd->jadwal_jam_pagi }}
+                                                        </p>
+                                                    @endif
                                                 </td>
                                                 <td class="text-center" width="15%">
                                                     @switch($jd->jadwal_cek_siang)
@@ -105,9 +111,11 @@
                                                             &#10006;
                                                         @break
                                                     @endswitch
-                                                    <p class="waktu-scan">
-                                                        Waktu Scan : {{ $jd->jadwal_jam_siang }}
-                                                    </p>
+                                                    @if($jd->jadwal_cek_siang == "YA")
+                                                        <p class="waktu-scan">
+                                                            Waktu Scan : {{ $jd->jadwal_jam_siang }}
+                                                        </p>
+                                                    @endif
                                                 </td>
                                                 <td class="text-center" width="15%">
                                                     @switch($jd->jadwal_cek_malam)
@@ -119,9 +127,11 @@
                                                             &#10006;
                                                         @break
                                                     @endswitch
-                                                    <p class="waktu-scan">
-                                                        Waktu Scan : {{ $jd->jadwal_jam_malam }}
-                                                    </p>
+                                                    @if($jd->jadwal_cek_malam == "YA")
+                                                        <p class="waktu-scan">
+                                                            Waktu Scan : {{ $jd->jadwal_jam_malam }}
+                                                        </p>
+                                                    @endif
                                                 </td>
                                                 <td class="text-center" width="15%">
                                                     @switch($jd->jadwal_cek_subuh)
@@ -133,9 +143,11 @@
                                                             &#10006;
                                                         @break
                                                     @endswitch
-                                                    <p class="waktu-scan">
-                                                        Waktu Scan : {{ $jd->jadwal_jam_subuh }}
-                                                    </p>
+                                                    @if($jd->jadwal_cek_subuh == "YA")
+                                                        <p class="waktu-scan">
+                                                            Waktu Scan : {{ $jd->jadwal_jam_subuh }}
+                                                        </p>
+                                                    @endif
                                                 </td>
                                             </tr>
                                         @endforeach
