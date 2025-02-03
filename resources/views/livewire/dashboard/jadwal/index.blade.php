@@ -12,19 +12,19 @@
         }
 
         .table-compact {
-            font-size: 12px; /* Perkecil ukuran teks */
+            font-size: 12px;
         }
         .table-compact th,
         .table-compact td {
-            padding: 4px; /* Perkecil padding */
-            margin: 0; /* Hapus margin */
+            padding: 4px;
+            margin: 0;
         }
         .table-compact p {
-            margin: 0; /* Hapus margin pada paragraf */
-            font-size: 10px; /* Perkecil teks dalam <p> */
+            margin: 0;
+            font-size: 10px;
         }
         .waktu-scan {
-            font-size: 10px; /* Perkecil teks waktu scan */
+            font-size: 10px;
         }
     </style>
     @endpush
