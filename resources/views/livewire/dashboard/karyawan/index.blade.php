@@ -41,6 +41,10 @@
 
         <div class="card">
             <div class="card-body">
+                <!-- FORM SEARCH -->
+                <div class="mb-3 d-flex justify-content-end">
+                    <input type="text" class="form-control w-25" placeholder="Cari karyawan..." wire:model.debounce.500ms="search">
+                </div>
                 <div class="row mt-1">
                     <div class="col-12">
                         <div wire:poll.5s>
@@ -55,12 +59,11 @@
                                             <th scope="col" class="text-center">Departemen</th>
                                             <th scope="col" class="text-center">Jabatan</th>
                                             <th scope="col" class="text-center">Kategori</th>
-                                            {{-- <th scope="col" class="text-center">QR Code</th> --}}
                                             <th scope="col" class="text-center">Opsi</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @php $x = 1; @endphp
+                                        @php $x = ($karyawan->currentPage() - 1) * $karyawan->perPage() + 1; @endphp
                                         @foreach($karyawan as $data)
                                             <tr>
                                                 <th class="text-center">{{ $x++ }}</th>
@@ -73,13 +76,6 @@
                                                 @php
                                                 $qrname = strtoupper($data->data_nama) . " - " . "(" . $data->data_no_id_card . ")";
                                                 @endphp
-                                                {{-- <td class="text-center">
-                                                    @if($data->data_qr)
-                                                        <img src="{{ asset('/') }}qr/{{$qrname}}.png" width="50">
-                                                    @else
-                                                        <span class="text-muted">Tidak Ada</span>
-                                                    @endif
-                                                </td> --}}
                                                 <td class="text-center">
                                                     <div class="btn-group">
                                                         <button class="btn btn-sm btn-info" wire:click="lihat({{ $data->id }})">Lihat</button>
@@ -98,7 +94,7 @@
             </div>
 
             <div class="row mt-0 mb-0">
-                <div class="col-12 d-flex justify-content-center">
+                <div class="col-12 d-flex justify-content-center" wire:ignore>
                     {{ $karyawan->links('pagination::bootstrap-4') }}
                 </div>
             </div>

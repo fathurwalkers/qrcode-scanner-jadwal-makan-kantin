@@ -25,12 +25,29 @@ use Livewire\WithPagination;
 class Index extends Component
 {
     use WithPagination;
+
     public $title = 'Data Karyawan';
+    public $search = ''; // Menampung input pencarian
+
+    public function updatingSearch()
+    {
+        $this->resetPage(); // Reset ke halaman pertama saat pencarian berubah
+    }
 
     public function render()
     {
+        $searchTerm = strtoupper($this->search); // Ubah input ke lowercase
+        // Query pencarian
+        $karyawan = Data::whereRaw("UPPER(data_nama) LIKE ?", ["%{$searchTerm}%"])
+                    ->orWhereRaw("UPPER(data_no_id_card) LIKE ?", ["%{$searchTerm}%"])
+                    ->orWhereRaw("UPPER(data_divisi) LIKE ?", ["%{$searchTerm}%"])
+                    ->orWhereRaw("UPPER(data_dept) LIKE ?", ["%{$searchTerm}%"])
+                    ->orWhereRaw("UPPER(data_jabatan) LIKE ?", ["%{$searchTerm}%"])
+                    ->latest('updated_at')
+                    ->paginate(5);
+
         return view('livewire.dashboard.karyawan.index', [
-            'karyawan' => Data::latest('updated_at')->paginate(5),
+            'karyawan' => $karyawan,
         ])->layout('layouts.dashboard-layout', [
             'title' => $this->title,
         ]);
