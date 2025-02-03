@@ -14,6 +14,14 @@
     <link href="{{ asset('assets/ruangadmin/') }}/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet"
         type="text/css">
     <link href="{{ asset('assets/ruangadmin/') }}/css/ruang-admin.min.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        .table {
+            font-size: 14px;
+        }
+    </style>
     @stack('css')
 </head>
 
