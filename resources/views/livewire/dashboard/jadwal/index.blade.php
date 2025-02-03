@@ -147,7 +147,7 @@
                 </div>
             </div>
             <div class="row mt-0 mb-0">
-                <div class="col-sm-12 col-md-12 col-lg-12 d-flex justify-content-center mx-auto">
+                <div class="col-sm-12 col-md-12 col-lg-12 d-flex justify-content-center mx-auto" wire:ignore>
                     {{ $jadwal->links('pagination::bootstrap-4') }}
                 </div>
             </div>

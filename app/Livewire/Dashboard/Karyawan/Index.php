@@ -27,25 +27,23 @@ class Index extends Component
     use WithPagination;
 
     public $title = 'Data Karyawan';
-    public $search = ''; // Menampung input pencarian
+    public $search = '';
 
     public function updatingSearch()
     {
-        $this->resetPage(); // Reset ke halaman pertama saat pencarian berubah
+        $this->resetPage();
     }
 
     public function render()
     {
-        $searchTerm = strtoupper($this->search); // Ubah input ke lowercase
-        // Query pencarian
+        $searchTerm = strtoupper($this->search);
         $karyawan = Data::whereRaw("UPPER(data_nama) LIKE ?", ["%{$searchTerm}%"])
-                    ->orWhereRaw("UPPER(data_no_id_card) LIKE ?", ["%{$searchTerm}%"])
-                    ->orWhereRaw("UPPER(data_divisi) LIKE ?", ["%{$searchTerm}%"])
-                    ->orWhereRaw("UPPER(data_dept) LIKE ?", ["%{$searchTerm}%"])
-                    ->orWhereRaw("UPPER(data_jabatan) LIKE ?", ["%{$searchTerm}%"])
-                    ->latest('updated_at')
-                    ->paginate(5);
-
+            ->orWhereRaw("UPPER(data_no_id_card) LIKE ?", ["%{$searchTerm}%"])
+            ->orWhereRaw("UPPER(data_divisi) LIKE ?", ["%{$searchTerm}%"])
+            ->orWhereRaw("UPPER(data_dept) LIKE ?", ["%{$searchTerm}%"])
+            ->orWhereRaw("UPPER(data_jabatan) LIKE ?", ["%{$searchTerm}%"])
+            ->latest('updated_at')
+            ->paginate(5);
         return view('livewire.dashboard.karyawan.index', [
             'karyawan' => $karyawan,
         ])->layout('layouts.dashboard-layout', [

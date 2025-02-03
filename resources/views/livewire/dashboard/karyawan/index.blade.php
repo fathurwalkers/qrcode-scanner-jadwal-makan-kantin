@@ -41,10 +41,11 @@
 
         <div class="card">
             <div class="card-body">
-                <!-- FORM SEARCH -->
+                <!--        FORM SEARCH        -->
                 <div class="mb-3 d-flex justify-content-end">
                     <input type="text" class="form-control w-25" placeholder="Cari karyawan..." wire:model.debounce.500ms="search">
                 </div>
+                <!--        END FORM SEARCH    -->
                 <div class="row mt-1">
                     <div class="col-12">
                         <div wire:poll.5s>
@@ -94,7 +95,7 @@
             </div>
 
             <div class="row mt-0 mb-0">
-                <div class="col-12 d-flex justify-content-center" wire:ignore>
+                <div class="col-sm-12 col-md-12 col-lg-12 d-flex justify-content-center mx-auto" wire:ignore>
                     {{ $karyawan->links('pagination::bootstrap-4') }}
                 </div>
             </div>
