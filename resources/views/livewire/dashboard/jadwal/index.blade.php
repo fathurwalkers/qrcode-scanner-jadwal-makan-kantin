@@ -43,7 +43,14 @@
             <div class="card-body">
                 <div class="mb-3 d-flex justify-content-between">
                     <input type="date" class="form-control w-25" wire:model="tanggalFilter">
-                    <button class="btn btn-primary" wire:click="$refresh">Refresh</button>
+                    <div class="btn-group">
+                        <button class="btn btn-sm btn-success mr-1" wire:click="$refresh">
+                            Import Data Manual
+                        </button>
+                        <button class="btn btn-sm btn-info" wire:click="$refresh">
+                            Refresh
+                        </button>
+                    </div>
                 </div>
                 <div class="row mt-1">
                     <div class="col-sm-12 col-md-12 col-lg-12">

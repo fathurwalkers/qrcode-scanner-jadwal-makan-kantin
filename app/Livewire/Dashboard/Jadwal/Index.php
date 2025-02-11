@@ -25,8 +25,11 @@ use Livewire\WithPagination;
 class Index extends Component
 {
     use WithPagination;
+
     public $title = 'Jadwal';
     public $tanggalFilter;
+
+    protected $queryString = ['tanggalFilter'];
 
     public function updatingTanggalFilter()
     {
@@ -35,11 +38,14 @@ class Index extends Component
 
     public function render()
     {
-        $jadwal = Jadwal::query();
+        $query = Jadwal::query();
+
         if (!empty($this->tanggalFilter)) {
-            $jadwal->whereDate('jadwal_tanggal', $this->tanggalFilter);
+            $query->whereDate('jadwal_tanggal', $this->tanggalFilter);
         }
-        $jadwal = $jadwal->latest('updated_at')->paginate(5);
+
+        $jadwal = $query->latest('updated_at')->paginate(5);
+
         return view('livewire.dashboard.jadwal.index', [
             'jadwal' => $jadwal,
         ])->layout('layouts.dashboard-layout', [
