@@ -38,30 +38,44 @@ class DashboardController extends Controller
     public function parseAbsensi($content)
     {
         $data = [];
-        $blocks = preg_split("//", $content);
+        $content = str_replace("\r", "", $content);
+        $blocks = preg_split("/(?:\f|\n\s*\n)/", $content);
+        $vacancyData = null;
         foreach ($blocks as $block) {
+            $block = preg_replace('/\s+/', ' ', trim($block));
             preg_match("/NIK\s+:\s+(\d+)/", $block, $nik);
-            preg_match("/Nama\s+:\s+(.+)/", $block, $nama);
-            preg_match("/(\d{2}\/\d{2}\/\d{4})\s+\w+\s+([\d:]+)?\s+([\d:]+)?\s+([\d:]+)?\s+([\d:]+)?/", $block, $waktu);
+            preg_match("/Nama\s+:\s+([A-Z\s]+)(?=\s+Outlet)/", $block, $nama);
+            preg_match("/(\d{2}\/\d{2}\/\d{4})\s*(OFF)?\s*([0-9]{2}:[0-9]{2})?\s*([0-9]{2}:[0-9]{2})?\s*([0-9]{2}:[0-9]{2})?\s*([0-9]{2}:[0-9]{2})?/", $block, $waktu);
             $fixTime = function ($time) {
-                if (!$time) return null;
-                $parts = explode(':', $time);
+                if (!$time || trim($time) === '') return null;
+                $parts = explode(':', trim($time));
                 if (count($parts) === 2) {
                     $hour = str_pad($parts[0], 2, "0", STR_PAD_LEFT);
                     return "{$hour}:{$parts[1]}:00";
                 }
                 return null;
             };
-            $data[] = [
-                'nik' => $nik[1] ?? null,
-                'nama' => trim($nama[1] ?? ''),
-                'jadwal_tanggal' => isset($waktu[1]) ? Carbon::createFromFormat('d/m/Y', $waktu[1])->toDateString() : null,
-                'jadwal_pagi' => isset($waktu[2]) ? $fixTime($waktu[2]) : null,
-                'jadwal_siang' => isset($waktu[3]) ? $fixTime($waktu[3]) : null,
-                'jadwal_malam' => isset($waktu[4]) ? $fixTime($waktu[4]) : null,
-                'jadwal_subuh' => isset($waktu[5]) ? $fixTime($waktu[5]) : null,
-            ];
+            if (!empty($nik[1]) && !empty($nama[1])) {
+                $entry = [
+                    'nik' => $nik[1] ?? null,
+                    'nama' => trim($nama[1] ?? ''),
+                    'jadwal_tanggal' => isset($waktu[1]) ? Carbon::createFromFormat('d/m/Y', $waktu[1])->toDateString() : null,
+                    'jadwal_pagi' => isset($waktu[2]) ? $fixTime($waktu[2]) : null,
+                    'jadwal_siang' => isset($waktu[3]) ? $fixTime($waktu[3]) : null,
+                    'jadwal_malam' => isset($waktu[4]) ? $fixTime($waktu[4]) : null,
+                    'jadwal_subuh' => isset($waktu[5]) ? $fixTime($waktu[5]) : null,
+                ];
+                if (strtoupper($entry['nama']) === "VACANCY") {
+                    $vacancyData = $entry;
+                } else {
+                    $data[] = $entry;
+                }
+            }
+        }
+        if ($vacancyData) {
+            array_unshift($data, $vacancyData);
         }
         return $data;
     }
+
 }

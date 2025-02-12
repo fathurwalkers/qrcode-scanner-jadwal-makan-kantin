@@ -24,7 +24,7 @@ Route::group(['prefix' => '/dashboard'], function () {
     Route::get('/data-karyawan', DashboardKaryawanIndex::class, 'index')->name('dashboard-data-karyawan');
 
     // [ POST ]
-    Route::post('/proses-test-qr', [DashboardController::class, 'import'])->name('import-absensi');
+    Route::post('/import-absensi', [DashboardController::class, 'import'])->name('import-absensi');
 });
 
 Route::get('/test-qr', [GenerateController::class, 'test_qr'])->name('test-qr');
