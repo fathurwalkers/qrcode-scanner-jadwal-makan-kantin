@@ -44,9 +44,13 @@
                 <div class="mb-3 d-flex justify-content-between">
                     <input type="date" class="form-control w-25" wire:model="tanggalFilter">
                     <div class="btn-group">
-                        <button class="btn btn-sm btn-success mr-1" wire:click="$refresh">
-                            Import Data Manual
-                        </button>
+                        <form action="{{ route('import-absensi') }}" method="POST" enctype="multipart/form-data">
+                            @csrf
+                            <div class="mb-3">
+                                <input type="file" name="file" class="form-control" required>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Upload</button>
+                        </form>
                         <button class="btn btn-sm btn-info" wire:click="$refresh">
                             Refresh
                         </button>

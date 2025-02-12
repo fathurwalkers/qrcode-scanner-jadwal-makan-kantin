@@ -18,9 +18,13 @@ Route::group(['prefix' => '/'], function () {
 
 Route::group(['prefix' => '/dashboard'], function () {
     // Index Route
+    // [ GET ]
     Route::get('/', DashboardIndex::class, 'index')->name('dashboard');
     Route::get('/jadwal', DashboardJadwalIndex::class, 'index')->name('dashboard-jadwal');
     Route::get('/data-karyawan', DashboardKaryawanIndex::class, 'index')->name('dashboard-data-karyawan');
+
+    // [ POST ]
+    Route::post('/proses-test-qr', [DashboardController::class, 'import'])->name('import-absensi');
 });
 
 Route::get('/test-qr', [GenerateController::class, 'test_qr'])->name('test-qr');
