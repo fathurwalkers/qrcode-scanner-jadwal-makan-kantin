@@ -40,12 +40,10 @@ class DashboardController extends Controller
         $data = [];
         $content = str_replace("\r", "", $content);
         $blocks = preg_split("/\n\s*\n/", $content);
-
         foreach ($blocks as $block) {
             preg_match("/NIK\s+:\s+(\d+)/", $block, $nik);
             preg_match("/Nama\s+:\s+(.+)/", $block, $nama);
             preg_match("/(\d{2}\/\d{2}\/\d{4})\s+(\d{2}:\d{2})?\s+(\d{2}:\d{2})?\s+(\d{2}:\d{2})?\s+(\d{2}:\d{2})?/", $block, $waktu);
-
             $fixTime = function ($time) {
                 if (!$time) return null;
                 $parts = explode(':', $time);
