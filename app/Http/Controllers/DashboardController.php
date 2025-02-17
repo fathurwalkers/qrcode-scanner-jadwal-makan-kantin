@@ -67,4 +67,9 @@ class DashboardController extends Controller
         }
         return $data;
     }
+
+    public function post_buat_user(Request $request)
+    {
+        //
+    }
 }
