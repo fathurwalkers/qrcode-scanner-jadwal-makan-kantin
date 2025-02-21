@@ -17,6 +17,7 @@
     <style>
         body {
             font-family: Arial, sans-serif;
+            color: black;
         }
         .table {
             font-size: 14px;
