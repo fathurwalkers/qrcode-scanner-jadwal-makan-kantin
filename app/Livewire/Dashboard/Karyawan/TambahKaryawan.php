@@ -22,31 +22,17 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Crypt;
 use Livewire\WithPagination;
 
-class Index extends Component
+class TambahKaryawan extends Component
 {
     use WithPagination;
 
     public $title = 'Data Karyawan';
     public $search = '';
 
-    public function updatingSearch()
-    {
-        $this->resetPage();
-    }
-
     public function render()
     {
-        $searchTerm = strtoupper($this->search);
-        $karyawan = Data::whereRaw("UPPER(data_nama) LIKE ?", ["%{$searchTerm}%"])
-            ->orWhereRaw("UPPER(data_no_id_card) LIKE ?", ["%{$searchTerm}%"])
-            ->orWhereRaw("UPPER(data_divisi) LIKE ?", ["%{$searchTerm}%"])
-            ->orWhereRaw("UPPER(data_dept) LIKE ?", ["%{$searchTerm}%"])
-            ->orWhereRaw("UPPER(data_jabatan) LIKE ?", ["%{$searchTerm}%"])
-            ->latest('updated_at')
-            ->latest()->paginate(5);
-        return view('livewire.dashboard.karyawan.index', [
-            'karyawan' => $karyawan,
-        ])->layout('layouts.dashboard-layout', [
+        return view('livewire.dashboard.karyawan.tambah-karyawan')
+        ->layout('layouts.dashboard-layout', [
             'title' => $this->title,
         ]);
     }

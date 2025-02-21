@@ -35,6 +35,12 @@
             <span>Data Karyawan</span>
         </a>
     </li>
+    <li class="nav-item">
+        <a class="nav-link" href="{{ route('dashboard-tambah-data-karyawan') }}">
+            <i class="fas fa-fw fa-palette"></i>
+            <span>Tambah Data Karyawan</span>
+        </a>
+    </li>
     <hr class="sidebar-divider">
     <div class="sidebar-heading">
         Examples

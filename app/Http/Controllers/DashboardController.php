@@ -70,6 +70,23 @@ class DashboardController extends Controller
 
     public function post_buat_user(Request $request)
     {
-        //
+        $data = new Data;
+        $qr_raw = $d[1] . "#" . $d[2];
+        $key = 'fathur-ganteng';
+        $iv = random_bytes(16);
+        $encrypted = openssl_encrypt($qr_raw, 'aes-256-cbc', $key, 0, $iv);
+        $encryptedData = base64_encode($encrypted . '::' . base64_encode($iv));
+        $save_data = $data->create([
+            'data_nama' => $d[1],
+            'data_no_id_card' => $d[2],
+            'data_divisi' => $d[3],
+            'data_dept' => $d[4],
+            'data_jabatan' => $d[5],
+            'data_kategori' => "MESS",
+            'data_qr' => $encryptedData,
+            'created_at' => now(),
+            'updated_at' => now()
+        ]);
+        dd($data);
     }
 }
