@@ -24,6 +24,7 @@ Route::group(['prefix' => '/dashboard'], function () {
     Route::get('/jadwal', DashboardJadwalIndex::class, 'index')->name('dashboard-jadwal');
     Route::get('/data-karyawan', DashboardKaryawanIndex::class, 'index')->name('dashboard-data-karyawan');
     Route::get('/tambah-data-karyawan', DashboardTambahKaryawan::class)->name('dashboard-tambah-data-karyawan');
+    Route::post('/print-jadwal', [DashboardController::class, 'print_jadwal'])->name('print-jadwal');
 
     // [ POST ]
     Route::post('/import-absensi', [DashboardController::class, 'import'])->name('import-absensi');

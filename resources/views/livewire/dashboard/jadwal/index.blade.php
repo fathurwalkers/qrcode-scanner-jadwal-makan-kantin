@@ -41,19 +41,18 @@
 
         <div class="card">
             <div class="card-body">
-                <div class="mb-3 d-flex justify-content-between">
-                    <input type="date" class="form-control w-25" wire:model="tanggalFilter">
-                    <div class="btn-group">
-                        <form action="{{ route('import-absensi') }}" method="POST" enctype="multipart/form-data">
+                <div class="row mb-3">
+                    <div class="col-sm-6 col-md-6 col-lg-6">
+                        <form action="{{ route('import-absensi') }}" method="POST" enctype="multipart/form-data" class="d-flex align-items-center">
                             @csrf
-                            <div class="mb-3">
-                                <input type="file" name="file" class="form-control" required>
-                            </div>
-                            <button type="submit" class="btn btn-primary">Upload</button>
                         </form>
-                        <button class="btn btn-sm btn-info" wire:click="$refresh">
-                            Refresh
-                        </button>
+                    </div>
+                    <div class="col-sm-6 col-md-6 col-lg-6 ml-auto d-flex justify-content-end">
+                        <form action="{{ route('import-absensi') }}" method="POST" enctype="multipart/form-data" class="d-flex align-items-center">
+                            @csrf
+                            <input type="file" name="file" class="form-control me-2 mr-2" required id="parse_absen">
+                            <button type="submit" class="btn btn-md btn-primary">Upload</button>
+                        </form>
                     </div>
                 </div>
                 <div class="row mt-1">
@@ -176,5 +175,8 @@
             </div>
         </div>
     </div>
+
+    @push('js')
+    @endpush
 
 </div>

@@ -27,22 +27,10 @@ class Index extends Component
     use WithPagination;
 
     public $title = 'Jadwal';
-    public $tanggalFilter;
-
-    protected $queryString = ['tanggalFilter'];
-
-    public function updatingTanggalFilter()
-    {
-        $this->resetPage();
-    }
 
     public function render()
     {
         $query = Jadwal::query();
-
-        if (!empty($this->tanggalFilter)) {
-            $query->whereDate('jadwal_tanggal', $this->tanggalFilter);
-        }
 
         $jadwal = $query->latest('updated_at')->paginate(5);
 
