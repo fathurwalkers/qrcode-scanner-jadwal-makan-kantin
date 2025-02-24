@@ -89,4 +89,10 @@ class DashboardController extends Controller
         ]);
         dd($data);
     }
+
+    public function print_jadwal($jadwal_tanggal)
+    {
+        $jadwal_tanggal = $jadwal_tanggal;
+        dd($jadwal_tanggal);
+    }
 }
