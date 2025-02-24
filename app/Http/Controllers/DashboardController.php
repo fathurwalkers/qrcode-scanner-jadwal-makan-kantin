@@ -93,6 +93,25 @@ class DashboardController extends Controller
     public function print_jadwal(Request $request)
     {
         $jadwal_tanggal = $request->jadwal_tanggal;
-        dd($jadwal_tanggal);
+        $jadwal = Jadwal::where('jadwal.jadwal_tanggal', $jadwal_tanggal)
+            ->leftJoin('data', 'jadwal.data_id', '=', 'data.id') // Join dengan tabel data
+            ->orderByRaw("
+                CASE
+                    WHEN data.data_divisi = 'HUMAN CAPITAL & GA' THEN 1
+                    WHEN data.data_divisi = 'PRODUKSI' THEN 2
+                    WHEN data.data_divisi = 'WAREHOUSE & ADMIN' THEN 3
+                    WHEN data.data_divisi = 'TANPA KETERANGAN' THEN 4
+                    WHEN data.data_divisi = 'OFFICE' THEN 5
+                    WHEN data.data_divisi = 'OPERASIONAL' THEN 6
+                    WHEN data.data_divisi IS NULL OR data.data_divisi = '' THEN 7
+                    ELSE 8
+                END
+            ")
+            ->select('jadwal.*') // Ambil semua kolom dari tabel jadwal
+            ->get();
+        return view('livewire.dashboard.jadwal.print-jadwal', [
+            'jadwal' => $jadwal,
+            'tanggal' => $jadwal_tanggal,
+        ]);
     }
 }
