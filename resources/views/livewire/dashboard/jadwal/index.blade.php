@@ -42,19 +42,35 @@
         <div class="card">
             <div class="card-body">
                 <div class="row mb-3">
+                    <!-- Form Pilih Tanggal -->
                     <div class="col-sm-6 col-md-6 col-lg-6">
-                        <form action="{{ route('import-absensi') }}" method="POST" enctype="multipart/form-data" class="d-flex align-items-center">
+                        <form action="{{ route('print-jadwal') }}" method="POST" class="d-flex align-items-end">
                             @csrf
+                            <div class="w-100">
+                                <label for="tanggal">Pilih Tanggal:</label>
+                                <div class="d-flex">
+                                    <input type="date" id="tanggal" name="jadwal_tanggal" class="form-control me-2 mr-1" required>
+                                    <button type="submit" class="btn btn-md btn-primary">Print</button>
+                                </div>
+                            </div>
                         </form>
                     </div>
-                    <div class="col-sm-6 col-md-6 col-lg-6 ml-auto d-flex justify-content-end">
-                        <form action="{{ route('import-absensi') }}" method="POST" enctype="multipart/form-data" class="d-flex align-items-center">
+
+                    <!-- Form Upload File -->
+                    <div class="col-sm-6 col-md-6 col-lg-6">
+                        <form action="{{ route('import-absensi') }}" method="POST" enctype="multipart/form-data" class="d-flex align-items-end">
                             @csrf
-                            <input type="file" name="file" class="form-control me-2 mr-2" required id="parse_absen">
-                            <button type="submit" class="btn btn-md btn-primary">Upload</button>
+                            <div class="w-100">
+                                <label for="parse_absen">Upload File Absensi:</label>
+                                <div class="d-flex">
+                                    <input type="file" name="file" class="form-control me-2 mr-1" required id="parse_absen">
+                                    <button type="submit" class="btn btn-md btn-primary">Upload</button>
+                                </div>
+                            </div>
                         </form>
                     </div>
                 </div>
+
                 <div class="row mt-1">
                     <div class="col-sm-12 col-md-12 col-lg-12">
                         <div wire:poll.keep-alive>

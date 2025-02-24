@@ -90,9 +90,9 @@ class DashboardController extends Controller
         dd($data);
     }
 
-    public function print_jadwal($jadwal_tanggal)
+    public function print_jadwal(Request $request)
     {
-        $jadwal_tanggal = $jadwal_tanggal;
+        $jadwal_tanggal = $request->jadwal_tanggal;
         dd($jadwal_tanggal);
     }
 }

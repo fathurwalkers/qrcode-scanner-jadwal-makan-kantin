@@ -19,8 +19,18 @@
             font-family: Arial, sans-serif;
             color: black;
         }
+
         .table {
             font-size: 14px;
+        }
+
+        .topbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between; /* Atur agar elemen di dalamnya tersebar dengan baik */
+            height: 70px; /* Sesuaikan tinggi navbar jika perlu */
+            padding: 10px 20px; /* Tambahkan padding agar lebih rapi */
+            margin-bottom: 0.5rem !important;
         }
     </style>
     @stack('css')
@@ -68,7 +78,7 @@
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <img class="img-profile rounded-circle"
                                     src="{{ asset('assets/ruangadmin/') }}/img/boy.png" style="max-width: 60px">
-                                <span class="ml-2 d-none d-lg-inline text-white small">Maman Ketoprak</span>
+                                <span class="ml-2 d-none d-lg-inline text-white small">Rich Brian</span>
                             </a>
                             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
                                 aria-labelledby="userDropdown">
