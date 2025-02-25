@@ -93,24 +93,38 @@ class DashboardController extends Controller
     public function print_jadwal(Request $request)
     {
         $jadwal_tanggal = $request->jadwal_tanggal;
-        $jadwal = Jadwal::where('jadwal.jadwal_tanggal', $jadwal_tanggal)
-            ->leftJoin('data', 'jadwal.data_id', '=', 'data.id') // Join dengan tabel data
-            ->orderByRaw("
-                CASE
-                    WHEN data.data_divisi = 'HUMAN CAPITAL & GA' THEN 1
-                    WHEN data.data_divisi = 'PRODUKSI' THEN 2
-                    WHEN data.data_divisi = 'WAREHOUSE & ADMIN' THEN 3
-                    WHEN data.data_divisi = 'TANPA KETERANGAN' THEN 4
-                    WHEN data.data_divisi = 'OFFICE' THEN 5
-                    WHEN data.data_divisi = 'OPERASIONAL' THEN 6
-                    WHEN data.data_divisi IS NULL OR data.data_divisi = '' THEN 7
-                    ELSE 8
-                END
-            ")
-            ->select('jadwal.*') // Ambil semua kolom dari tabel jadwal
-            ->get();
+        $data = Data::orderByRaw("
+            CASE
+                WHEN data_divisi = 'HUMAN CAPITAL & GA' THEN 1
+                WHEN data_divisi = 'PRODUKSI' THEN 2
+                WHEN data_divisi = 'WAREHOUSE & ADMIN' THEN 3
+                WHEN data_divisi = 'TANPA KETERANGAN' THEN 4
+                WHEN data_divisi = 'OFFICE' THEN 5
+                WHEN data_divisi = 'OPERASIONAL' THEN 6
+                WHEN data_divisi IS NULL OR data_divisi = '' THEN 7
+                ELSE 8
+            END
+        ")->get();
+        $jadwal = Jadwal::where('jadwal_tanggal', $jadwal_tanggal)->get()->keyBy('data_id');
+        $result = [];
+        foreach ($data as $item) {
+            $jadwalData = $jadwal[$item->id] ?? null;
+            $result[] = [
+                'data_nama' => $item->data_nama,
+                'data_divisi' => $item->data_divisi,
+                'data_jabatan' => $item->data_jabatan,
+                'pagi' => $jadwalData->jadwal_cek_pagi ?? 'TIDAK',
+                'pagi_scan' => isset($jadwalData->jadwal_jam_pagi) ? date('H:i:s', strtotime($jadwalData->jadwal_jam_pagi)) : NULL,
+                'siang' => $jadwalData->jadwal_cek_siang ?? 'TIDAK',
+                'siang_scan' => isset($jadwalData->jadwal_jam_siang) ? date('H:i:s', strtotime($jadwalData->jadwal_jam_siang)) : NULL,
+                'malam' => $jadwalData->jadwal_cek_malam ?? 'TIDAK',
+                'malam_scan' => isset($jadwalData->jadwal_jam_malam) ? date('H:i:s', strtotime($jadwalData->jadwal_jam_malam)) : NULL,
+                'subuh' => $jadwalData->jadwal_cek_subuh ?? 'TIDAK',
+                'subuh_scan' => isset($jadwalData->jadwal_jam_subuh) ? date('H:i:s', strtotime($jadwalData->jadwal_jam_subuh)) : NULL,
+            ];
+        }
         return view('livewire.dashboard.jadwal.print-jadwal', [
-            'jadwal' => $jadwal,
+            'result' => $result,
             'tanggal' => $jadwal_tanggal,
         ]);
     }

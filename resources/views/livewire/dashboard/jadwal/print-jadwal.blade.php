@@ -183,7 +183,7 @@
                     <tr>
                         <th scope="col" class="text-center">#</th>
                         <th scope="col" class="text-center">Nama</th>
-                        <th scope="col" class="text-center">Divsi</th>
+                        <th scope="col" class="text-center">Divisi</th>
                         <th scope="col" class="text-center">Jabatan</th>
                         <th scope="col" class="text-center">PAGI</th>
                         <th scope="col" class="text-center">SIANG</th>
@@ -192,85 +192,50 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @php
-                    $x = 1;
-                    @endphp
-                    @foreach($jadwal as $jd)
+                    @php $x = 1; @endphp
+                    @foreach($result as $item)
                         <tr>
                             <th class="text-center text-middle" width="4%">
                                 {{ $x++ }}
                             </th>
                             <td class="text-center text-middle" width="10%">
-                                {{ $jd->data->data_nama }} <br />
-                                {{ $jd->data->data_no_id_card }} <br />
+                                {{ $item['data_nama'] }} <br />
                             </td>
                             <td class="text-center text-middle" width="10%">
-                                {{ $jd->data->data_divisi }} <br />
+                                {{ $item['data_divisi'] }} <br />
                             </td>
                             <td class="text-center text-middle" width="10%">
-                                {{ $jd->data->data_jabatan }} <br />
+                                {{ $item['data_jabatan'] }} <br />
                             </td>
                             <td class="text-center" width="15%">
-                                @switch($jd->jadwal_cek_pagi)
-                                    @case('YA')
-                                        &#10004;
-                                    @break
-
-                                    @case('TIDAK')
-                                        &#10006;
-                                    @break
-                                @endswitch
-                                @if($jd->jadwal_cek_pagi == "YA")
+                                {!! $item['pagi'] === 'YA' ? '&#10004;' : '&#10006;' !!}
+                                @if($item['pagi'] === 'YA' && isset($item['pagi_scan']))
                                     <p class="waktu-scan">
-                                        Waktu Scan : {{ $jd->jadwal_jam_pagi }}
+                                        Waktu Scan: {{ $item['pagi_scan'] }}
                                     </p>
                                 @endif
                             </td>
                             <td class="text-center" width="15%">
-                                @switch($jd->jadwal_cek_siang)
-                                    @case('YA')
-                                        &#10004;
-                                    @break
-
-                                    @case('TIDAK')
-                                        &#10006;
-                                    @break
-                                @endswitch
-                                @if($jd->jadwal_cek_siang == "YA")
+                                {!! $item['siang'] === 'YA' ? '&#10004;' : '&#10006;' !!}
+                                @if($item['siang'] === 'YA' && isset($item['siang_scan']))
                                     <p class="waktu-scan">
-                                        Waktu Scan : {{ $jd->jadwal_jam_siang }}
+                                        Waktu Scan: {{ $item['siang_scan'] }}
                                     </p>
                                 @endif
                             </td>
                             <td class="text-center" width="15%">
-                                @switch($jd->jadwal_cek_malam)
-                                    @case('YA')
-                                        &#10004;
-                                    @break
-
-                                    @case('TIDAK')
-                                        &#10006;
-                                    @break
-                                @endswitch
-                                @if($jd->jadwal_cek_malam == "YA")
+                                {!! $item['malam'] === 'YA' ? '&#10004;' : '&#10006;' !!}
+                                @if($item['malam'] === 'YA' && isset($item['malam_scan']))
                                     <p class="waktu-scan">
-                                        Waktu Scan : {{ $jd->jadwal_jam_malam }}
+                                        Waktu Scan: {{ $item['malam_scan'] }}
                                     </p>
                                 @endif
                             </td>
                             <td class="text-center" width="15%">
-                                @switch($jd->jadwal_cek_subuh)
-                                    @case('YA')
-                                        &#10004;
-                                    @break
-
-                                    @case('TIDAK')
-                                        &#10006;
-                                    @break
-                                @endswitch
-                                @if($jd->jadwal_cek_subuh == "YA")
+                                {!! $item['subuh'] === 'YA' ? '&#10004;' : '&#10006;' !!}
+                                @if($item['subuh'] === 'YA' && isset($item['subuh_scan']))
                                     <p class="waktu-scan">
-                                        Waktu Scan : {{ $jd->jadwal_jam_subuh }}
+                                        Waktu Scan: {{ $item['subuh_scan'] }}
                                     </p>
                                 @endif
                             </td>
