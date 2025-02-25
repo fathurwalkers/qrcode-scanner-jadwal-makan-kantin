@@ -85,8 +85,8 @@
                                             <th scope="col" class="text-center">Tanggal / Waktu</th>
                                             <th scope="col" class="text-center">PAGI</th>
                                             <th scope="col" class="text-center">SIANG</th>
+                                            <th scope="col" class="text-center">SORE</th>
                                             <th scope="col" class="text-center">MALAM</th>
-                                            <th scope="col" class="text-center">SUBUH</th>
                                         </tr>
                                     </thead>
                                     <tbody>

@@ -19,6 +19,22 @@
             font-size: 14px;
         }
 
+        .text-8px {
+             font-size: 8px !important;
+        }
+
+        .text-10px {
+            font-size: 10px !important;
+        }
+
+        .text-11px {
+            font-size: 11px !important;
+        }
+
+        .text-12px {
+            font-size: 12px !important;
+        }
+
         .table {
             width: 100%;
             margin-bottom: 1rem;
@@ -187,8 +203,8 @@
                         <th scope="col" class="text-center">Jabatan</th>
                         <th scope="col" class="text-center">PAGI</th>
                         <th scope="col" class="text-center">SIANG</th>
+                        <th scope="col" class="text-center">SORE</th>
                         <th scope="col" class="text-center">MALAM</th>
-                        <th scope="col" class="text-center">SUBUH</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -198,13 +214,14 @@
                             <th class="text-center text-middle" width="4%">
                                 {{ $x++ }}
                             </th>
-                            <td class="text-center text-middle" width="10%">
+                            <td class="text-center text-middle text-11px" width="10%">
                                 {{ $item['data_nama'] }} <br />
                             </td>
-                            <td class="text-center text-middle" width="10%">
+                            <td class="text-center text-middle text-10px" width="10%">
                                 {{ $item['data_divisi'] }} <br />
+                                {{-- {!! preg_replace('/\s*&\s*/', '<br>&<br>', $item['data_divisi']) !!} --}}
                             </td>
-                            <td class="text-center text-middle" width="10%">
+                            <td class="text-center text-middle text-10px" width="10%">
                                 {{ $item['data_jabatan'] }} <br />
                             </td>
                             <td class="text-center" width="15%">

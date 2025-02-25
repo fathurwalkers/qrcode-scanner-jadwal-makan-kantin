@@ -64,8 +64,8 @@
                         <th scope="col" class="text-center">Tanggal / Waktu</th>
                         <th scope="col" class="text-center">PAGI</th>
                         <th scope="col" class="text-center">SIANG</th>
+                        <th scope="col" class="text-center">SORE</th>
                         <th scope="col" class="text-center">MALAM</th>
-                        <th scope="col" class="text-center">SUBUH</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -184,6 +184,25 @@
 
             <div class="card shadow mx-2 mb-4" style="max-width: 18rem;">
                 <div class="card-header bg-warning text-white text-center">
+                    <b>SORE</b>
+                </div>
+                <div class="card-body">
+                    <div class="row align-items-center">
+                        <div class="col mr-2">
+                            <h3 class="h3 mb-2 font-weight-bold text-gray-800 text-center">240</h3>
+                            <p class="text-xs text-muted">
+
+                            </p>
+                            <div class="mt-2 mb-0 text-center text-xs">
+                                <h5 class="countdown-sore">00:00:00</h5>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card shadow mx-2 mb-4" style="max-width: 18rem;">
+                <div class="card-header bg-danger text-white text-center">
                     <b>MALAM</b>
                 </div>
                 <div class="card-body">
@@ -195,25 +214,6 @@
                             </p>
                             <div class="mt-2 mb-0 text-center text-xs">
                                 <h5 class="countdown-malam">00:00:00</h5>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="card shadow mx-2 mb-4" style="max-width: 18rem;">
-                <div class="card-header bg-danger text-white text-center">
-                    <b>SUBUH</b>
-                </div>
-                <div class="card-body">
-                    <div class="row align-items-center">
-                        <div class="col mr-2">
-                            <h3 class="h3 mb-2 font-weight-bold text-gray-800 text-center">240</h3>
-                            <p class="text-xs text-muted">
-
-                            </p>
-                            <div class="mt-2 mb-0 text-center text-xs">
-                                <h5 class="countdown-subuh">00:00:00</h5>
                             </div>
                         </div>
                     </div>
@@ -266,8 +266,8 @@
                 const startTime = new Date();
                 const endTime = new Date();
 
-                // Rentang waktu PAGI: 06:00 AM - 08:00 AM WITA
-                startTime.setHours(6, 0, 0); // Set ke 06:00 AM WITA
+                // Rentang waktu PAGI: 02:00 AM - 08:00 AM WITA
+                startTime.setHours(2, 0, 0); // Set ke 02:00 AM WITA
                 endTime.setHours(8, 0, 0); // Set ke 08:00 AM WITA
 
                 runCountdown(countdownElement, startTime, endTime);
@@ -285,20 +285,20 @@
                 runCountdown(countdownElement, startTime, endTime);
             }
 
-            function countdown_malam() {
-                const countdownElement = document.querySelector('.countdown-malam');
+            function countdown_sore() {
+                const countdownElement = document.querySelector('.countdown-sore');
                 const startTime = new Date();
                 const endTime = new Date();
 
                 // Rentang waktu MALAM: 16:30 PM - 19:00 PM WITA
                 startTime.setHours(16, 30, 0); // Set ke 04:30 PM WITA
-                endTime.setHours(19, 0, 0); // Set ke 07:00 PM WITA
+                endTime.setHours(20, 0, 0); // Set ke 09:00 PM WITA
 
                 runCountdown(countdownElement, startTime, endTime);
             }
 
-            function countdown_subuh() {
-                const countdownElement = document.querySelector('.countdown-subuh');
+            function countdown_malam() {
+                const countdownElement = document.querySelector('.countdown-malam');
                 const startTime = new Date();
                 const endTime = new Date();
 
@@ -318,8 +318,8 @@
             // Panggil semua fungsi countdown
             countdown_pagi();
             countdown_siang();
+            countdown_sore();
             countdown_malam();
-            countdown_subuh();
         </script>
     @endpush
 </div>
