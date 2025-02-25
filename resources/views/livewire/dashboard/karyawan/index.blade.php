@@ -90,12 +90,12 @@
                                                 @endphp
                                                 <td class="text-center">
                                                     <div class="btn-group">
-                                                        @if (file_exists(public_path($qrPath)))
-                                                            <a href="{{ asset($qrPath) }}" class="btn btn-sm btn-info" download>Download</a>
+                                                        @if (file_exists(public_path('qr/' . $data->data_nama . ' - (' . $data->data_no_id_card . ').png')))
+                                                            <a href="{{ asset('qr/' . $data->data_nama . ' - (' . $data->data_no_id_card . ').png') }}" class="btn btn-sm btn-info" download>Download</a>
                                                         @else
                                                             <button class="btn btn-sm btn-secondary" disabled>Tidak Ada</button>
                                                         @endif
-                                                        <button class="btn btn-sm btn-warning" wire:click="ubah({{ $data->id }})">Ubah</button>
+                                                        {{-- <button class="btn btn-sm btn-warning" wire:click="ubah({{ $data->id }})">Ubah</button> --}}
                                                         <button class="btn btn-danger btn-sm" onclick="showDeleteModal({{ $data->id }}, '{{ $data->data_nama }}')">
                                                             Hapus
                                                         </button>
