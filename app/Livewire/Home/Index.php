@@ -55,9 +55,18 @@ class Index extends Component
         $now = Carbon::now($this->timezone);
         $decryptedData = $this->decryptQrData($inputPass);
         $explodeInputRequest = explode("#", $decryptedData);
+        dd($explodeInputRequest);
         $data = Data::where('data_nama', $explodeInputRequest[0])
             ->where('data_no_id_card', $explodeInputRequest[1])
             ->first();
+
+        if ($data === null) {
+            $data = Data::where('data_unique_id', $explodeInputRequest[0])
+            ->where('data_no_id_card', $explodeInputRequest[1])
+            ->first();
+            dump($data);
+        }
+        dd($data);
         if ($data) {
             $tanggalHariIni = $now->toDateString();
             $currentHour = $now->hour;

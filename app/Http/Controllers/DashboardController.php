@@ -70,10 +70,28 @@ class DashboardController extends Controller
         return $data;
     }
 
+    public function generateUniqueDataId()
+    {
+        $characters = 'abcdefghijklmnopqrstuvwxyz0123456789';
+        $uniqueId = '';
+        for ($i = 0; $i < 10; $i++) {
+            $index = rand(0, strlen($characters) - 1);
+            $uniqueId .= $characters[$index];
+        }
+        while (Data::where('data_unique_id', $uniqueId)->exists()) {
+            $uniqueId = $this->generateUniqueDataId(); // Rekursif untuk membuat yang baru
+        }
+        return $uniqueId;
+    }
+
     public function post_buat_user(Request $request)
     {
         $data = new Data;
-        $qr_raw = strtoupper($request->data_nama) . "#" . strtoupper($request->data_no_id_card);
+        ### CARA LAMA ###
+        // $qr_raw = strtoupper($request->data_nama) . "#" . strtoupper($request->data_no_id_card);
+        ### CARA BARU ###
+        $uniqueId = strtoupper($this->generateUniqueDataId());
+        $qr_raw = strtoupper($request->data_unique_id) . "#" . strtoupper($request->data_no_id_card);
         $key = 'fathur-ganteng';
         $iv = random_bytes(16);
         $encrypted = openssl_encrypt($qr_raw, 'aes-256-cbc', $key, 0, $iv);
