@@ -87,11 +87,13 @@ class DashboardController extends Controller
     public function post_buat_user(Request $request)
     {
         $data = new Data;
+
         ### CARA LAMA ###
         // $qr_raw = strtoupper($request->data_nama) . "#" . strtoupper($request->data_no_id_card);
+
         ### CARA BARU ###
         $uniqueId = strtoupper($this->generateUniqueDataId());
-        $qr_raw = strtoupper($request->data_unique_id) . "#" . strtoupper($request->data_no_id_card);
+        $qr_raw = strtoupper($uniqueId) . "#" . strtoupper($request->data_no_id_card);
         $key = 'fathur-ganteng';
         $iv = random_bytes(16);
         $encrypted = openssl_encrypt($qr_raw, 'aes-256-cbc', $key, 0, $iv);
@@ -104,6 +106,7 @@ class DashboardController extends Controller
             'data_jabatan' =>  strtoupper($request->data_jabatan),
             'data_kategori' => "KARYAWAN",
             'data_qr' => $encryptedData,
+            'data_unique_id' => $uniqueId,
             'created_at' => now(),
             'updated_at' => now()
         ]);
