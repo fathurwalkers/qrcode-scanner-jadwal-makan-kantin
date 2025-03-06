@@ -87,14 +87,12 @@ class GenerateController extends Controller
             echo "Tidak ada data di tabel Data.";
             return;
         }
-
         $timeRanges = [
             'subuh' => ['startHour' => 3, 'startMinute' => 0, 'endHour' => 4, 'endMinute' => 40],
             'pagi' => ['startHour' => 6, 'startMinute' => 0, 'endHour' => 8, 'endMinute' => 30],
             'siang' => ['startHour' => 11, 'startMinute' => 0, 'endHour' => 12, 'endMinute' => 59],
             'malam' => ['startHour' => 16, 'startMinute' => 30, 'endHour' => 18, 'endMinute' => 59],
         ];
-
         for ($i = 1; $i <= 20; $i++) {
             $data = Data::find(184);
             $jadwalExisting = Jadwal::where('data_id', $data->id)
@@ -107,7 +105,6 @@ class GenerateController extends Controller
                 $timeRanges[$selectedRange]['endHour'],
                 $timeRanges[$selectedRange]['endMinute']
             );
-
             if ($jadwalExisting) {
                 if ($jadwalExisting["jadwal_cek_{$selectedRange}"] === 'TIDAK') {
                     $jadwalExisting->update([

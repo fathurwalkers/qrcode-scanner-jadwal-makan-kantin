@@ -79,7 +79,7 @@ class DashboardController extends Controller
             $uniqueId .= $characters[$index];
         }
         while (Data::where('data_unique_id', $uniqueId)->exists()) {
-            $uniqueId = $this->generateUniqueDataId(); // Rekursif untuk membuat yang baru
+            $uniqueId = $this->generateUniqueDataId();
         }
         return $uniqueId;
     }
@@ -87,10 +87,8 @@ class DashboardController extends Controller
     public function post_buat_user(Request $request)
     {
         $data = new Data;
-
         ### CARA LAMA ###
         // $qr_raw = strtoupper($request->data_nama) . "#" . strtoupper($request->data_no_id_card);
-
         ### CARA BARU ###
         $uniqueId = strtoupper($this->generateUniqueDataId());
         $qr_raw = strtoupper($uniqueId) . "#" . strtoupper($request->data_no_id_card);
@@ -136,6 +134,12 @@ class DashboardController extends Controller
 
     public function hapus_user(Request $request)
     {
+        $data = Data::all();
+        $i = 1;
+        foreach ($data as $dt) {
+            dump(strlen($dt->data_no_id_card));
+        }
+        die;
         $user_id = intval($request->user_id);
         $user = Data::find($user_id);
         $filename = $user->data_nama . ' - (' . $user->data_no_id_card . ').png'; // Sesuaikan ekstensi file
@@ -158,7 +162,56 @@ class DashboardController extends Controller
     {
         $user_id = intval($request->user_id);
         $user = Data::find($user_id);
-        dd($user);
+
+        $filename = $user->data_nama . ' - (' . $user->data_no_id_card . ').png'; // Sesuaikan ekstensi file
+        $filepath = public_path('qr/' . $filename);
+        if (File::exists($filepath)) {
+            echo "ADA!";
+            File::delete($filepath);
+        } else {
+            echo "TIDAK ADA!";
+        }
+
+        ### CARA BARU ###
+        $uniqueId = strtoupper($user->data_unique_id);
+        $qr_raw = strtoupper($uniqueId) . "#" . strtoupper($request->data_no_id_card);
+        $key = 'fathur-ganteng';
+        $iv = random_bytes(16);
+        $encrypted = openssl_encrypt($qr_raw, 'aes-256-cbc', $key, 0, $iv);
+        $encryptedData = base64_encode($encrypted . '::' . base64_encode($iv));
+
+        $user->update([
+            'data_nama' => strtoupper($request->data_nama),
+            'data_no_id_card' =>  strtoupper($request->data_no_id_card),
+            'data_divisi' =>  strtoupper($request->data_divisi),
+            'data_dept' =>  strtoupper($request->data_dept),
+            'data_jabatan' =>  strtoupper($request->data_jabatan),
+            'data_qr' =>  $encryptedData,
+            'updated_at' => now()
+        ]);
+
+        $qr = QrCode::format('png')->size(500)
+            ->eye('circle')
+            ->color(0, 0, 0)
+            ->margin(2)
+            ->generate($user->data_qr);
+        $qrImageName = $user->data_nama . ' - ' . '(' . $user->data_no_id_card . ')' . '.png';
+        $qrPath = public_path('qr/' . $qrImageName);
+        if (file_exists($qrPath)) {
+            echo "File $qrImageName sudah ada, skip...\n <br />";
+            \Log::info('File: ' . $qrImageName . ' sudah ada, skip...');
+        }
+        $saved = file_put_contents($qrPath, $qr);
+        if ($saved) {
+            echo "Berhasil generate QR untuk: $user->data_nama\n";
+            \Log::info('File: ' . $qrImageName . ' berhasil di-generate!');
+        } else {
+            echo "Gagal menyimpan QR untuk: $user->data_nama\n";
+            \Log::error('File: ' . $qrImageName . ' gagal di-save...');
+        }
+        echo "BERHASIL GENERATE QR!";
+
+        return redirect()->route('dashboard-data-karyawan')->with('status', 'Berhasil Mengubah Data Karyawan!');
     }
 
     public function print_jadwal(Request $request)

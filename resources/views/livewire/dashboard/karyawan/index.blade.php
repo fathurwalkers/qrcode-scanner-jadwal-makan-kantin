@@ -106,7 +106,7 @@
                                                                 Ada</button>
                                                         @endif
                                                         <button type="button" class="btn btn-sm btn-primary"
-                                                            data-toggle="modal" data-target="#editModal">
+                                                            data-toggle="modal" data-target="#moda_edit{{ $data->id }}">
                                                             Ubah
                                                         </button>
                                                         <button class="btn btn-danger btn-sm"
@@ -118,7 +118,7 @@
                                             </tr>
 
                                             <!-- Modal -->
-                                            <div class="modal fade" id="editModal" tabindex="-1" role="dialog"
+                                            <div class="modal fade" id="moda_edit{{ $data->id }}" tabindex="-1" role="dialog"
                                                 aria-labelledby="exampleModalLabel" aria-hidden="true" wire:ignore.self>
                                                 <div class="modal-dialog modal-lg" role="document">
                                                     <div class="modal-content">
@@ -145,7 +145,7 @@
                                                                         <div class="col-sm-6 col-md-6 col-lg-6">
                                                                             <div class="form-group" id="login_level">
                                                                                 <label for="exampleFormControlInput1" class="form-label">No. ID Card</label>
-                                                                                <input type="number" class="form-control" id="data_no_id_card" value="{{ $data->data_no_id_card }}" name="data_no_id_card">
+                                                                                <input type="number" class="form-control" id="data_no_id_card" name="data_no_id_card" value="{{ $data->data_no_id_card }}">
                                                                             </div>
                                                                         </div>
                                                                     </div>
@@ -260,28 +260,6 @@
 
                 // Tutup modal setelah hapus
                 $('#deleteModal').modal('hide');
-                $('body').removeClass('modal-open');
-                $('.modal-backdrop').remove();
-            }
-
-            function showEditModal(id, name) {
-                // Set nama karyawan di modal
-                document.getElementById("employeeName").textContent = name;
-                document.getElementById("id_user").value = id;
-
-                // Simpan ID karyawan di tombol hapus
-                document.getElementById("confirmEdit").setAttribute("onclick", `editEmployee(${id})`);
-
-                // Tampilkan modal
-                $('#editModal').modal('show');
-            }
-
-            function editEmployee(id) {
-                // Contoh: Kirim AJAX atau form edit
-                console.log("Menghapus karyawan dengan ID:", id);
-
-                // Tutup modal setelah hapus
-                $('#editModal').modal('hide');
                 $('body').removeClass('modal-open');
                 $('.modal-backdrop').remove();
             }

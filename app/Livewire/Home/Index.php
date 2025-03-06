@@ -58,10 +58,20 @@ class Index extends Component
         $data = Data::where('data_nama', $explodeInputRequest[0])
             ->where('data_no_id_card', $explodeInputRequest[1])
             ->first();
-
         if ($data === null) {
             $data = Data::where('data_unique_id', $explodeInputRequest[0])
             ->where('data_no_id_card', $explodeInputRequest[1])
+            ->first();
+        }
+        if ($data === null) {
+            if (strlen($explodeInputRequest[1]) > 5) {
+                $ambil_no_id_card = substr($explodeInputRequest[1], -5);
+            } elseif (strlen($explodeInputRequest[1]) === 5) {
+                $ambil_no_id_card = $explodeInputRequest[1];
+            } else {
+                $ambil_no_id_card = null;
+            }
+            $data = Data::where('data_no_id_card', $ambil_no_id_card)
             ->first();
         }
         if ($data) {
