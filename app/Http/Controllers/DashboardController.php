@@ -134,12 +134,6 @@ class DashboardController extends Controller
 
     public function hapus_user(Request $request)
     {
-        $data = Data::all();
-        $i = 1;
-        foreach ($data as $dt) {
-            dump(strlen($dt->data_no_id_card));
-        }
-        die;
         $user_id = intval($request->user_id);
         $user = Data::find($user_id);
         $filename = $user->data_nama . ' - (' . $user->data_no_id_card . ').png'; // Sesuaikan ekstensi file
