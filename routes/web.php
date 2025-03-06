@@ -38,5 +38,6 @@ Route::post('/proses-test-qr', [GenerateController::class, 'proses_test_qr'])->n
 
 // Route::get('/generate-data', [GenerateController::class, 'generate_data'])->name('generate-data');
 Route::get('/generate-qr', [GenerateController::class, 'generate_qr'])->name('generate-qr');
+Route::get('/generate-unique-id', [GenerateController::class, 'generate_unique_id'])->name('generate-unique-id');
 Route::get('/generate-login', [GenerateController::class, 'generate_login'])->name('generate-login');
 Route::get('/generate-jadwal', [GenerateController::class, 'generate_jadwal'])->name('generate-jadwal');

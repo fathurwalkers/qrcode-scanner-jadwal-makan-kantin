@@ -204,4 +204,27 @@ class GenerateController extends Controller
             echo "Maaf jangan input sembarangan bos!";
         }
     }
+
+    public function generateUniqueDataId()
+    {
+        $characters = 'abcdefghijklmnopqrstuvwxyz0123456789';
+        $uniqueId = '';
+        for ($i = 0; $i < 10; $i++) {
+            $index = rand(0, strlen($characters) - 1);
+            $uniqueId .= $characters[$index];
+        }
+        while (Data::where('data_unique_id', $uniqueId)->exists()) {
+            $uniqueId = $this->generateUniqueDataId(); // Rekursif untuk membuat yang baru
+        }
+        return $uniqueId;
+    }
+
+    public function generate_unique_id()
+    {
+        $dataRecords = Data::whereNull('data_unique_id')->get();
+        foreach ($dataRecords as $record) {
+            $record->data_unique_id = strtoupper($this->generateUniqueDataId());
+            $record->save();
+        }
+    }
 }
