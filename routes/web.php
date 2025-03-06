@@ -26,6 +26,7 @@ Route::group(['prefix' => '/dashboard'], function () {
     Route::get('/tambah-data-karyawan', DashboardTambahKaryawan::class)->name('dashboard-tambah-data-karyawan');
 
     // [ POST ]
+    Route::post('/edit-user', [DashboardController::class, 'edit_user'])->name('edit-user');
     Route::post('/hapus-user', [DashboardController::class, 'hapus_user'])->name('hapus-user');
     Route::post('/print-jadwal', [DashboardController::class, 'print_jadwal'])->name('print-jadwal');
     Route::post('/post-buat-user', [DashboardController::class, 'post_buat_user'])->name('post-buat-user');

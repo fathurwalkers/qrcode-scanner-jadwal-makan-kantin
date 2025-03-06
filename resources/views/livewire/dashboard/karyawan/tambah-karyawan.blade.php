@@ -43,6 +43,8 @@
                                     <option value="HUMAN CAPITAL & GA">HUMAN CAPITAL & GA</option>
                                     <option value="PRODUKSI">PRODUKSI</option>
                                     <option value="WAREHOUSE & ADMIN">WAREHOUSE & ADMIN</option>
+                                    <option value="TANPA KETERANGAN">TANPA KETERANGAN</option>
+                                    <option value="PHL">PHL</option>
                                 </select>
                             </div>
                         </div>

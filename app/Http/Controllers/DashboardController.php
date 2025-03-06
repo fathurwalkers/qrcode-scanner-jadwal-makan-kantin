@@ -117,23 +117,27 @@ class DashboardController extends Controller
     {
         $user_id = intval($request->user_id);
         $user = Data::find($user_id);
-
         $filename = $user->data_nama . ' - (' . $user->data_no_id_card . ').png'; // Sesuaikan ekstensi file
         $filepath = public_path('qr/' . $filename);
-
         if (File::exists($filepath)) {
             echo "ADA!";
             File::delete($filepath);
         } else {
             echo "TIDAK ADA!";
         }
-        // die;
         if ($user) {
             $user->delete();
             return redirect()->route('dashboard-data-karyawan')->with('status', 'Berhasil Menghapus Data Karyawan!');
         } else {
             return redirect()->route('dashboard-data-karyawan')->with('status', 'Gagal Menghapus Data Karyawan!');
         }
+    }
+
+    public function edit_user(Request $request)
+    {
+        $user_id = intval($request->user_id);
+        $user = Data::find($user_id);
+        dd($user);
     }
 
     public function print_jadwal(Request $request)
