@@ -63,10 +63,13 @@
                             <div class="card-body">
                                 <div class="row align-items-center">
                                     <div class="col mr-2">
-                                        <h3 class="h3 mb-2 font-weight-bold text-gray-800 text-center">240</h3>
-                                        <p class="text-xs text-muted">
-
-                                        </p>
+                                        <h3 class="h3 mb-2 font-weight-bold text-gray-800 text-center">
+                                            @if($counts->pagi == null)
+                                                0
+                                            @else
+                                                {{ $counts->pagi }}
+                                            @endif
+                                        </h3>
                                         <div class="mt-2 mb-0 text-center text-xs">
                                             <h5 class="countdown-pagi">00:00:00</h5>
                                         </div>
@@ -82,10 +85,13 @@
                             <div class="card-body">
                                 <div class="row align-items-center">
                                     <div class="col mr-2">
-                                        <h3 class="h3 mb-2 font-weight-bold text-gray-800 text-center">240</h3>
-                                        <p class="text-xs text-muted">
-
-                                        </p>
+                                        <h3 class="h3 mb-2 font-weight-bold text-gray-800 text-center">
+                                            @if($counts->siang == null)
+                                                0
+                                            @else
+                                                {{ $counts->siang }}
+                                            @endif
+                                        </h3>
                                         <div class="mt-2 mb-0 text-center text-xs">
                                             <h5 class="countdown-siang">00:00:00</h5>
                                         </div>
@@ -101,10 +107,13 @@
                             <div class="card-body">
                                 <div class="row align-items-center">
                                     <div class="col mr-2">
-                                        <h3 class="h3 mb-2 font-weight-bold text-gray-800 text-center">240</h3>
-                                        <p class="text-xs text-muted">
-
-                                        </p>
+                                        <h3 class="h3 mb-2 font-weight-bold text-gray-800 text-center">
+                                            @if($counts->malam == null)
+                                                0
+                                            @else
+                                                {{ $counts->malam }}
+                                            @endif
+                                        </h3>
                                         <div class="mt-2 mb-0 text-center text-xs">
                                             <h5 class="countdown-malam">00:00:00</h5>
                                         </div>
@@ -120,10 +129,13 @@
                             <div class="card-body">
                                 <div class="row align-items-center">
                                     <div class="col mr-2">
-                                        <h3 class="h3 mb-2 font-weight-bold text-gray-800 text-center">240</h3>
-                                        <p class="text-xs text-muted">
-
-                                        </p>
+                                        <h3 class="h3 mb-2 font-weight-bold text-gray-800 text-center">
+                                            @if($counts->subuh == null)
+                                                0
+                                            @else
+                                                {{ $counts->subuh }}
+                                            @endif
+                                        </h3>
                                         <div class="mt-2 mb-0 text-center text-xs">
                                             <h5 class="countdown-subuh">00:00:00</h5>
                                         </div>

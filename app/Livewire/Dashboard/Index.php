@@ -28,19 +28,18 @@ class Index extends Component
 
     public function render()
     {
-        $date = '2025-01-30';
+        $date = '2025-02-11';
         $this->tanggalHariIni = Carbon::today()->toDateString();
         $this->counts = DB::table('jadwal')
             ->whereDate('jadwal_tanggal', $this->tanggalHariIni)
             ->selectRaw('
-                COUNT(jadwal_cek_subuh) as subuh,
-                COUNT(jadwal_cek_pagi) as pagi,
-                COUNT(jadwal_cek_siang) as siang,
-                COUNT(jadwal_cek_malam) as malam
+                SUM(CASE WHEN jadwal_cek_subuh = "YA" THEN 1 ELSE 0 END) as subuh,
+                SUM(CASE WHEN jadwal_cek_pagi = "YA" THEN 1 ELSE 0 END) as pagi,
+                SUM(CASE WHEN jadwal_cek_siang = "YA" THEN 1 ELSE 0 END) as siang,
+                SUM(CASE WHEN jadwal_cek_malam = "YA" THEN 1 ELSE 0 END) as malam
             ')
             ->first();
         $this->jadwal = Jadwal::latest()->get();
-        // dd($this->counts);
         return view('livewire.dashboard.index')
             ->layout('layouts.dashboard-layout', [
                 'title' => $this->title,

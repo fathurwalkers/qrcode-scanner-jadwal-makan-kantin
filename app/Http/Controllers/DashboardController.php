@@ -24,34 +24,60 @@ class DashboardController extends Controller
         $request->validate([
             'file' => 'required|mimes:txt|max:2048',
         ]);
+
         $path = $request->file('file')->move(public_path('assets/absensi-import'), $request->file('file')->getClientOriginalName());
         $content = file_get_contents($path);
         $parsedData = $this->parseAbsensi($content);
+
         foreach ($parsedData as $dataParse) {
             $date = Carbon::create(2025, 3, 7)->toDateString();
             $nama = $dataParse['nama'];
             $no_id_card = $dataParse['nik'];
+
             $data = Data::where('data_no_id_card', 'LIKE', "%$no_id_card%")
                 ->where('data_nama', 'LIKE', "%$nama%")
                 ->first();
+
             if (!$data) continue;
+
             $jadwal = Jadwal::where('jadwal_tanggal', $date)->where('data_id', $data->id)->get();
+
             if ($jadwal->count() == 0) {
-                $new_jadwal = new Jadwal;
-                $jadwal_cek_pagi  = !is_null($dataParse['jadwal_pagi']) ? "YA" : "TIDAK";
-                $jadwal_cek_siang = !is_null($dataParse['jadwal_siang']) ? "YA" : "TIDAK";
-                $jadwal_cek_malam = !is_null($dataParse['jadwal_malam']) ? "YA" : "TIDAK";
-                $jadwal_cek_subuh = !is_null($dataParse['jadwal_subuh']) ? "YA" : "TIDAK";
-                $save_jadwal = $new_jadwal->create([
+                $rentangWaktu = [
+                    'subuh' => null,
+                    'pagi' => null,
+                    'siang' => null,
+                    'malam' => null
+                ];
+
+                // Menentukan slot waktu yang benar berdasarkan jamnya
+                foreach (['jadwal_subuh', 'jadwal_pagi', 'jadwal_siang', 'jadwal_malam'] as $jadwalKey) {
+                    if (!is_null($dataParse[$jadwalKey])) {
+                        $jam = Carbon::parse($dataParse[$jadwalKey])->hour;
+
+                        if ($jam >= 3 && ($jam < 4 || ($jam == 4 && Carbon::parse($dataParse[$jadwalKey])->minute <= 40))) {
+                            $rentangWaktu['subuh'] = $dataParse[$jadwalKey];
+                        } elseif ($jam >= 6 && ($jam < 8 || ($jam == 8 && Carbon::parse($dataParse[$jadwalKey])->minute <= 30))) {
+                            $rentangWaktu['pagi'] = $dataParse[$jadwalKey];
+                        } elseif ($jam >= 11 && $jam < 13) {
+                            $rentangWaktu['siang'] = $dataParse[$jadwalKey];
+                        } elseif (($jam == 16 && Carbon::parse($dataParse[$jadwalKey])->minute >= 30) || ($jam >= 17 && $jam < 19)) {
+                            $rentangWaktu['malam'] = $dataParse[$jadwalKey];
+                        }
+                    }
+                }
+
+                // Menyimpan data yang sudah sesuai rentang waktunya
+                Jadwal::create([
                     'jadwal_tanggal' => $dataParse["jadwal_tanggal"],
-                    'jadwal_cek_subuh' => $jadwal_cek_subuh,
-                    'jadwal_cek_pagi' => $jadwal_cek_pagi,
-                    'jadwal_cek_siang' => $jadwal_cek_siang,
-                    'jadwal_cek_malam' => $jadwal_cek_malam,
-                    'jadwal_jam_subuh' => $dataParse['jadwal_subuh'],
-                    'jadwal_jam_pagi' => $dataParse['jadwal_pagi'],
-                    'jadwal_jam_siang' => $dataParse['jadwal_siang'],
-                    'jadwal_jam_malam' => $dataParse['jadwal_malam'],
+                    'jadwal_cek_subuh' => !is_null($rentangWaktu['subuh']) ? "YA" : "TIDAK",
+                    'jadwal_cek_pagi' => !is_null($rentangWaktu['pagi']) ? "YA" : "TIDAK",
+                    'jadwal_cek_siang' => !is_null($rentangWaktu['siang']) ? "YA" : "TIDAK",
+                    'jadwal_cek_malam' => !is_null($rentangWaktu['malam']) ? "YA" : "TIDAK",
+                    'jadwal_jam_subuh' => $rentangWaktu['subuh'],
+                    'jadwal_jam_pagi' => $rentangWaktu['pagi'],
+                    'jadwal_jam_siang' => $rentangWaktu['siang'],
+                    'jadwal_jam_malam' => $rentangWaktu['malam'],
                     'jadwal_status' => 'Active',
                     'data_id' => $data->id,
                     'periode_id' => NULL,
@@ -62,6 +88,7 @@ class DashboardController extends Controller
                 echo "jadwal tidak kosong";
             }
         }
+
         return redirect()->back()->with('success', 'Data berhasil diimport!');
     }
 
