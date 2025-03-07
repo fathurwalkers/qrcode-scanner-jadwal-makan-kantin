@@ -197,7 +197,6 @@ class DashboardController extends Controller
     {
         $user_id = intval($request->user_id);
         $user = Data::find($user_id);
-
         $filename = $user->data_nama . ' - (' . $user->data_no_id_card . ').png'; // Sesuaikan ekstensi file
         $filepath = public_path('qr/' . $filename);
         if (File::exists($filepath)) {
@@ -206,15 +205,12 @@ class DashboardController extends Controller
         } else {
             echo "TIDAK ADA!";
         }
-
-        ### CARA BARU ###
         $uniqueId = strtoupper($user->data_unique_id);
         $qr_raw = strtoupper($uniqueId) . "#" . strtoupper($request->data_no_id_card);
         $key = 'fathur-ganteng';
         $iv = random_bytes(16);
         $encrypted = openssl_encrypt($qr_raw, 'aes-256-cbc', $key, 0, $iv);
         $encryptedData = base64_encode($encrypted . '::' . base64_encode($iv));
-
         $user->update([
             'data_nama' => strtoupper($request->data_nama),
             'data_no_id_card' =>  strtoupper($request->data_no_id_card),
@@ -224,7 +220,6 @@ class DashboardController extends Controller
             'data_qr' =>  $encryptedData,
             'updated_at' => now()
         ]);
-
         $qr = QrCode::format('png')->size(500)
             ->eye('circle')
             ->color(0, 0, 0)
@@ -245,7 +240,6 @@ class DashboardController extends Controller
             \Log::error('File: ' . $qrImageName . ' gagal di-save...');
         }
         echo "BERHASIL GENERATE QR!";
-
         return redirect()->route('dashboard-data-karyawan')->with('status', 'Berhasil Mengubah Data Karyawan!');
     }
 
@@ -266,27 +260,41 @@ class DashboardController extends Controller
         ")->get();
         $jadwal = Jadwal::where('jadwal_tanggal', $jadwal_tanggal)->get()->keyBy('data_id');
         $result = [];
+        $count_pagi = $count_siang = $count_malam = $count_subuh = 0;
         foreach ($data as $item) {
             $jadwalData = $jadwal[$item->id] ?? null;
+            $pagi = $jadwalData->jadwal_cek_pagi ?? 'TIDAK';
+            $siang = $jadwalData->jadwal_cek_siang ?? 'TIDAK';
+            $malam = $jadwalData->jadwal_cek_malam ?? 'TIDAK';
+            $subuh = $jadwalData->jadwal_cek_subuh ?? 'TIDAK';
+            if ($pagi === 'YA') $count_pagi++;
+            if ($siang === 'YA') $count_siang++;
+            if ($malam === 'YA') $count_malam++;
+            if ($subuh === 'YA') $count_subuh++;
             $result[] = [
                 'data_nama' => $item->data_nama,
                 'data_divisi' => $item->data_divisi,
                 'data_jabatan' => $item->data_jabatan,
-                'pagi' => $jadwalData->jadwal_cek_pagi ?? 'TIDAK',
+                'pagi' => $pagi,
                 'pagi_scan' => isset($jadwalData->jadwal_jam_pagi) ? date('H:i:s', strtotime($jadwalData->jadwal_jam_pagi)) : NULL,
-                'siang' => $jadwalData->jadwal_cek_siang ?? 'TIDAK',
+                'siang' => $siang,
                 'siang_scan' => isset($jadwalData->jadwal_jam_siang) ? date('H:i:s', strtotime($jadwalData->jadwal_jam_siang)) : NULL,
-                'malam' => $jadwalData->jadwal_cek_malam ?? 'TIDAK',
+                'malam' => $malam,
                 'malam_scan' => isset($jadwalData->jadwal_jam_malam) ? date('H:i:s', strtotime($jadwalData->jadwal_jam_malam)) : NULL,
-                'subuh' => $jadwalData->jadwal_cek_subuh ?? 'TIDAK',
+                'subuh' => $subuh,
                 'subuh_scan' => isset($jadwalData->jadwal_jam_subuh) ? date('H:i:s', strtotime($jadwalData->jadwal_jam_subuh)) : NULL,
             ];
         }
         return view('livewire.dashboard.jadwal.print-jadwal', [
             'result' => $result,
             'tanggal' => $jadwal_tanggal,
+            'count_pagi' => $count_pagi,
+            'count_siang' => $count_siang,
+            'count_malam' => $count_malam,
+            'count_subuh' => $count_subuh,
         ]);
     }
+
 
     // ########################## BACKUP FUNGSI IMPORT ########################## //
     // public function import(Request $request)

@@ -196,6 +196,13 @@
 
             <table class="table table-bordered border-primary table-compact">
                 <thead>
+                    <tr class="bg-light">
+                        <th class="text-center" colspan="4">Total</th>
+                        <th class="text-center">{{ $count_pagi }}</th>
+                        <th class="text-center">{{ $count_siang }}</th>
+                        <th class="text-center">{{ $count_malam }}</th>
+                        <th class="text-center">{{ $count_subuh }}</th>
+                    </tr>
                     <tr>
                         <th scope="col" class="text-center">#</th>
                         <th scope="col" class="text-center">Nama</th>
