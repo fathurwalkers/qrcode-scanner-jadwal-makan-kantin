@@ -27,19 +27,15 @@ class DashboardController extends Controller
         $path = $request->file('file')->move(public_path('assets/absensi-import'), $request->file('file')->getClientOriginalName());
         $content = file_get_contents($path);
         $parsedData = $this->parseAbsensi($content);
-        // dd($parsedData);
         foreach ($parsedData as $dataParse) {
-            // dd($dataParse);
-            // substr($explodeInputRequest[1], -5)
-            // $date = $dataParse['jadwal_tanggal'];
             $date = Carbon::create(2025, 3, 7)->toDateString(); // "2025-01-30"
             $nama = $dataParse['nama'];
             $no_id_card = $dataParse['nik'];
             $data = Data::where('data_no_id_card', 'LIKE', "%$no_id_card%")
                 ->where('data_nama', 'LIKE', "%$nama%")
                 ->first();
+            if (!$data) continue;
             $jadwal = Jadwal::where('jadwal_tanggal', $date)->where('data_id', $data->id)->get();
-            // dump($data->toSql());
             if ($jadwal->count() == 0) {
                 $new_jadwal = new Jadwal;
                 $jadwal_cek_pagi  = !is_null($dataParse['jadwal_pagi']) ? "YA" : "TIDAK";
@@ -66,7 +62,6 @@ class DashboardController extends Controller
                 echo "jadwal tidak kosong";
             }
         }
-        // die;
         return redirect()->back()->with('success', 'Data berhasil diimport!');
     }
 
