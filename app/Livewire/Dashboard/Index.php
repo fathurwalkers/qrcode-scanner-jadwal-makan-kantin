@@ -23,13 +23,28 @@ class Index extends Component
     public $title = 'Dashboard Manajemen Penjadwalan';
 
     public $jadwal;
+    public $tanggalHariIni;
+    public $counts;
 
     public function render()
     {
+        $date = '2025-01-30';
+        $this->tanggalHariIni = Carbon::today()->toDateString();
+        $this->counts = DB::table('jadwal')
+            ->whereDate('jadwal_tanggal', $this->tanggalHariIni)
+            ->selectRaw('
+                COUNT(jadwal_cek_subuh) as subuh,
+                COUNT(jadwal_cek_pagi) as pagi,
+                COUNT(jadwal_cek_siang) as siang,
+                COUNT(jadwal_cek_malam) as malam
+            ')
+            ->first();
         $this->jadwal = Jadwal::latest()->get();
+        // dd($this->counts);
         return view('livewire.dashboard.index')
             ->layout('layouts.dashboard-layout', [
                 'title' => $this->title,
+                'counts' => $this->counts,
             ]);
     }
 
