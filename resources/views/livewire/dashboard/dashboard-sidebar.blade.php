@@ -25,7 +25,7 @@
             <div class="bg-white py-2 collapse-inner rounded">
                 <h6 class="collapse-header">Management</h6>
                 <a class="collapse-item" href="{{ route('dashboard-jadwal') }}">Jadwal</a>
-                <a class="collapse-item" href="{{ route('dashboard') }}">Input Data Jadwal</a>
+                {{-- <a class="collapse-item" href="{{ route('dashboard') }}">Input Data Jadwal</a> --}}
             </div>
         </div>
     </li>
@@ -41,7 +41,7 @@
             <span>Tambah Data Karyawan</span>
         </a>
     </li>
-    {{-- <hr class="sidebar-divider">
+    <hr class="sidebar-divider">
     <div class="sidebar-heading">
         Examples
     </div>
@@ -61,7 +61,7 @@
                 <a class="collapse-item" href="blank.html">Blank Page</a>
             </div>
         </div>
-    </li> --}}
+    </li>
     <hr class="sidebar-divider">
     <div class="version" id="version-ruangadmin"></div>
 </div>
