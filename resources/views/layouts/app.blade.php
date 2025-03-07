@@ -87,6 +87,20 @@
     <script src="{{ asset('assets/jquery') }}/jquery.min.js"></script>
     <script src="{{ asset('assets/bootstrap4/js') }}/bootstrap.min.js"></script>
     @stack('js')
+    <script>
+        console.log(`
+
+        █▀▀ ▄▀█ ▀█▀ █░█ █░█ █▀█ █░█░█ ▄▀█ █░░ █▄▀ █▀▀ █▀█ █▀
+        █▀░ █▀█ ░█░ █▀█ █▄█ █▀▄ ▀▄▀▄▀ █▀█ █▄▄ █░█ ██▄ █▀▄ ▄█
+        `);
+        console.log("%cFathur Walkers", "font-weight: bold; color: cyan; background: black;");
+        console.log("%cCreated By  : Muh. Fathurrahman", "font-weight: bold; color: cyan; background: black;");
+        console.log("%cAlias       : Fathur Walkers / Win32", "font-weight: bold; color: cyan; background: black;");
+        console.log("%cTeam        : ex-Typical Idiot Security Est. 2016", "font-weight: bold; color: cyan; background: black;");
+        console.log("%cCredits     : ChatGPT, Perplexity.io", "font-weight: bold; color: cyan; background: black;");
+        console.log("%cWorking on  : INDOASPHALT (Buton, Sulawesi Tenggara)", "font-weight: bold; color: cyan; background: black;");
+        console.log("%c\"There are no such thing as Simplicity\"", "font-style: italic; color: cyan;");
+    </script>
     @livewireScripts
 </body>
 

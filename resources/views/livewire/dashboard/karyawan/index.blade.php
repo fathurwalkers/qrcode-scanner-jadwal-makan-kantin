@@ -100,18 +100,23 @@
                                                     <div class="btn-group">
                                                         @if (file_exists(public_path('qr/' . $data->data_nama . ' - (' . $data->data_no_id_card . ').png')))
                                                             <a href="{{ asset('qr/' . $data->data_nama . ' - (' . $data->data_no_id_card . ').png') }}"
-                                                                class="btn btn-sm btn-info" download>Download</a>
+                                                                class="btn btn-sm btn-info" download>
+                                                                <i class="fas fa-download"></i>
+                                                                Download QR
+                                                            </a>
                                                         @else
-                                                            <button class="btn btn-sm btn-secondary" disabled>Tidak
-                                                                Ada</button>
+                                                            <button class="btn btn-sm btn-secondary" disabled>
+                                                                Tidak
+                                                                Ada QR
+                                                            </button>
                                                         @endif
                                                         <button type="button" class="btn btn-sm btn-primary"
                                                             data-toggle="modal" data-target="#moda_edit{{ $data->id }}">
-                                                            Ubah
+                                                            <i class="fas fa-pencil-alt me-1" style="vertical-align: middle;"></i>
                                                         </button>
                                                         <button class="btn btn-danger btn-sm"
                                                             onclick="showDeleteModal({{ $data->id }}, '{{ $data->data_nama }}')">
-                                                            Hapus
+                                                            <i class="fas fa-trash me-1" style="vertical-align: middle;"></i>
                                                         </button>
                                                     </div>
                                                 </td>
