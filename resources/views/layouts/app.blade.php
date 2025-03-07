@@ -93,7 +93,6 @@
         █▀▀ ▄▀█ ▀█▀ █░█ █░█ █▀█ █░█░█ ▄▀█ █░░ █▄▀ █▀▀ █▀█ █▀
         █▀░ █▀█ ░█░ █▀█ █▄█ █▀▄ ▀▄▀▄▀ █▀█ █▄▄ █░█ ██▄ █▀▄ ▄█
         `);
-        console.log("%cFathur Walkers", "font-weight: bold; color: cyan; background: black;");
         console.log("%cCreated By  : Muh. Fathurrahman", "font-weight: bold; color: cyan; background: black;");
         console.log("%cAlias       : Fathur Walkers / Win32", "font-weight: bold; color: cyan; background: black;");
         console.log("%cTeam        : ex-Typical Idiot Security Est. 2016", "font-weight: bold; color: cyan; background: black;");
