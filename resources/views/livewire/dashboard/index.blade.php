@@ -53,6 +53,16 @@
         <div class="card">
             <div class="card-body">
 
+                @if (session('status'))
+                    <div class="row">
+                        <div class="col-sm-12 col-md-12 col-lg-12">
+                            <div class="alert alert-success">
+                                {{ session('status') }}
+                            </div>
+                        </div>
+                    </div>
+                @endif
+
                 <div class="row">
                     <div class="card-group w-100">
 

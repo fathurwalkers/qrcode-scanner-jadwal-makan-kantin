@@ -22,32 +22,10 @@ class GenerateController extends Controller
 {
     public function generate_login()
     {
-        // ADMINISTRATOR
-        $token = Str::random(16);
-        $role = "admin";
-        $hashPassword = Hash::make('jancok', [
-            'rounds' => 12,
-        ]);
-        $hashToken = Hash::make($token, [
-            'rounds' => 12,
-        ]);
-        Login::create([
-            'login_nama' => 'Fathur',
-            'login_username' => 'fathurwalkers',
-            'login_password' => $hashPassword,
-            'login_email' => 'muhfathur@indoasphalt.com',
-            'login_telepon' => '0808080808',
-            'login_token' => $hashToken,
-            'login_level' => $role,
-            'login_status' => "verified",
-            'created_at' => now(),
-            'updated_at' => now()
-        ]);
-
         // ADMINISTRATOR 2
         $token = Str::random(16);
         $role = "admin";
-        $hashPassword = Hash::make('xl920228', [
+        $hashPassword = Hash::make('admin', [
             'rounds' => 12,
         ]);
         $hashToken = Hash::make($token, [
@@ -66,7 +44,161 @@ class GenerateController extends Controller
             'updated_at' => now()
         ]);
 
-        echo "Berhasil Generate Data Login Admin!";
+        // Fathur
+        $token = Str::random(16);
+        $role = "pengawas";
+        $hashPassword = Hash::make('jancok', [
+            'rounds' => 12,
+        ]);
+        $hashToken = Hash::make($token, [
+            'rounds' => 12,
+        ]);
+        Login::create([
+            'login_nama' => 'Muh. Fathurrahman',
+            'login_username' => 'fathur',
+            'login_password' => $hashPassword,
+            'login_email' => 'muhfathur@indoasphalt.com',
+            'login_telepon' => '085137091655',
+            'login_token' => $hashToken,
+            'login_level' => $role,
+            'login_status' => "verified",
+            'created_at' => now(),
+            'updated_at' => now()
+        ]);
+
+        // Wahyu
+        $token = Str::random(16);
+        $role = "pengawas";
+        $hashPassword = Hash::make('wahyu123', [
+            'rounds' => 12,
+        ]);
+        $hashToken = Hash::make($token, [
+            'rounds' => 12,
+        ]);
+        Login::create([
+            'login_nama' => 'Wahyu Nur Susilo',
+            'login_username' => 'wahyu',
+            'login_password' => $hashPassword,
+            'login_email' => 'wahyu@indoasphalt.com',
+            'login_telepon' => null,
+            'login_token' => $hashToken,
+            'login_level' => $role,
+            'login_status' => "verified",
+            'created_at' => now(),
+            'updated_at' => now()
+        ]);
+
+        // Pak Yuli
+        $token = Str::random(16);
+        $role = "pengawas";
+        $hashPassword = Hash::make('yuli123', [
+            'rounds' => 12,
+        ]);
+        $hashToken = Hash::make($token, [
+            'rounds' => 12,
+        ]);
+        Login::create([
+            'login_nama' => 'Yuli Supamrih',
+            'login_username' => 'yuli',
+            'login_password' => $hashPassword,
+            'login_email' => null,
+            'login_telepon' => null,
+            'login_token' => $hashToken,
+            'login_level' => $role,
+            'login_status' => "verified",
+            'created_at' => now(),
+            'updated_at' => now()
+        ]);
+
+        // Daffa
+        $token = Str::random(16);
+        $role = "pengawas";
+        $hashPassword = Hash::make('daffa123', [
+            'rounds' => 12,
+        ]);
+        $hashToken = Hash::make($token, [
+            'rounds' => 12,
+        ]);
+        Login::create([
+            'login_nama' => 'Daffa',
+            'login_username' => 'daffa',
+            'login_password' => $hashPassword,
+            'login_email' => null,
+            'login_telepon' => null,
+            'login_token' => $hashToken,
+            'login_level' => $role,
+            'login_status' => "verified",
+            'created_at' => now(),
+            'updated_at' => now()
+        ]);
+
+        // Bon
+        $token = Str::random(16);
+        $role = "pengawas";
+        $hashPassword = Hash::make('bon123', [
+            'rounds' => 12,
+        ]);
+        $hashToken = Hash::make($token, [
+            'rounds' => 12,
+        ]);
+        Login::create([
+            'login_nama' => 'Irfan Galistan',
+            'login_username' => 'bon',
+            'login_password' => $hashPassword,
+            'login_email' => null,
+            'login_telepon' => null,
+            'login_token' => $hashToken,
+            'login_level' => $role,
+            'login_status' => "verified",
+            'created_at' => now(),
+            'updated_at' => now()
+        ]);
+
+        // Pak Amin
+        $token = Str::random(16);
+        $role = "pengawas";
+        $hashPassword = Hash::make('amin123', [
+            'rounds' => 12,
+        ]);
+        $hashToken = Hash::make($token, [
+            'rounds' => 12,
+        ]);
+        Login::create([
+            'login_nama' => 'La Ode Amyn',
+            'login_username' => 'amin',
+            'login_password' => $hashPassword,
+            'login_email' => null,
+            'login_telepon' => null,
+            'login_token' => $hashToken,
+            'login_level' => $role,
+            'login_status' => "verified",
+            'created_at' => now(),
+            'updated_at' => now()
+        ]);
+
+        // Titi
+        $token = Str::random(16);
+        $role = "pengawas";
+        $hashPassword = Hash::make('titi123', [
+            'rounds' => 12,
+        ]);
+        $hashToken = Hash::make($token, [
+            'rounds' => 12,
+        ]);
+        Login::create([
+            'login_nama' => 'Sri Titi Wahyuningsih',
+            'login_username' => 'titi',
+            'login_password' => $hashPassword,
+            'login_email' => null,
+            'login_telepon' => null,
+            'login_token' => $hashToken,
+            'login_level' => $role,
+            'login_status' => "verified",
+            'created_at' => now(),
+            'updated_at' => now()
+        ]);
+
+        echo "Berhasil Generate Data Login!";
     }
 
     public function generateRandomTime($startHour, $startMinute, $endHour, $endMinute)

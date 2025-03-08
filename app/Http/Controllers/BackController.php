@@ -64,14 +64,7 @@ class BackController extends Controller
             $cek_password = Hash::check($request->login_password, $data_login->login_password);
             if ($cek_password === true) {
                 $users = session(['data_login' => $data_login]);
-                switch ($login_request) {
-                    case 'Dashboard':
-                        return redirect()->route('home')->with('status', 'Berhasil Login!');
-                        break;
-                    case 'File':
-                        return redirect()->route('files')->with('status', 'Berhasil Login!');
-                        break;
-                }
+                return redirect()->route('dashboard')->with('status', 'Berhasil Login!');
             } elseif ($cek_password !== true) {
                 return back()->with('status', 'Maaf username atau password salah!')->withInput();
             } else {

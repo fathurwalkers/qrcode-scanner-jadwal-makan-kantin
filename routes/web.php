@@ -33,6 +33,9 @@ Route::group(['prefix' => '/dashboard'], function () {
     Route::post('/import-absensi', [DashboardController::class, 'import'])->name('import-absensi');
 });
 
+Route::get('/login', [BackController::class, 'login'])->name('login');
+Route::post('/post-login', [BackController::class, 'post_login'])->name('post-login');
+
 Route::get('/test-qr', [GenerateController::class, 'test_qr'])->name('test-qr');
 Route::post('/proses-test-qr', [GenerateController::class, 'proses_test_qr'])->name('proses-test-qr');
 
