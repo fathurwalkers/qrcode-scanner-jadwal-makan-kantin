@@ -5,6 +5,7 @@ use App\Http\Controllers\BackController;
 use App\Http\Controllers\GenerateController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\HomeController;
+use App\Http\Middleware\CekLogin;
 use App\Livewire\Home\Index as HomeIndex;
 use App\Livewire\Dashboard\Index as DashboardIndex;
 use App\Livewire\Dashboard\Jadwal\Index as DashboardJadwalIndex;
@@ -17,7 +18,7 @@ Route::group(['prefix' => '/'], function () {
     Route::get('/', HomeIndex::class, 'index')->name('home');
 });
 
-Route::group(['prefix' => '/dashboard'], function () {
+Route::group(['prefix' => '/dashboard', 'middleware' => CekLogin::class], function () {
     // Index Route
     // [ GET ]
     Route::get('/', DashboardIndex::class, 'index')->name('dashboard');
@@ -35,6 +36,7 @@ Route::group(['prefix' => '/dashboard'], function () {
 
 Route::get('/login', [BackController::class, 'login'])->name('login');
 Route::post('/post-login', [BackController::class, 'post_login'])->name('post-login');
+Route::post('/logout', [BackController::class, 'logout'])->name('logout');
 
 Route::get('/test-qr', [GenerateController::class, 'test_qr'])->name('test-qr');
 Route::post('/proses-test-qr', [GenerateController::class, 'proses_test_qr'])->name('proses-test-qr');

@@ -27,38 +27,30 @@
                                     <div class="text-center">
                                         <h1 class="h4 text-gray-900 mb-4">Login</h1>
                                     </div>
-                                    <form class="user">
+                                    <form action="{{ route('post-login') }}" method="POST">
+                                        @csrf
                                         <div class="form-group">
-                                            <input type="email" class="form-control" id="exampleInputEmail"
-                                                aria-describedby="emailHelp" placeholder="Enter Email Address">
+                                            <input type="text" class="form-control" id="login_username"
+                                                aria-describedby="emailHelp" placeholder="Masukkan Username..." name="login_username">
                                         </div>
                                         <div class="form-group">
-                                            <input type="password" class="form-control" id="exampleInputPassword"
-                                                placeholder="Password">
+                                            <input type="password" class="form-control" id="login_username"
+                                                placeholder="Masukkan Password Anda..." name="login_password">
                                         </div>
-                                        <div class="form-group">
+                                        {{-- <div class="form-group">
                                             <div class="custom-control custom-checkbox small"
                                                 style="line-height: 1.5rem;">
                                                 <input type="checkbox" class="custom-control-input" id="customCheck">
                                                 <label class="custom-control-label" for="customCheck">Remember
                                                     Me</label>
                                             </div>
-                                        </div>
+                                        </div> --}}
                                         <div class="form-group">
-                                            <a href="index.html" class="btn btn-primary btn-block">Login</a>
+                                            <button class="btn btn-primary btn-block" type="submit">
+                                                Login
+                                            </button>
                                         </div>
-                                        <hr>
-                                        <a href="index.html" class="btn btn-google btn-block">
-                                            <i class="fab fa-google fa-fw"></i> Login with Google
-                                        </a>
-                                        <a href="index.html" class="btn btn-facebook btn-block">
-                                            <i class="fab fa-facebook-f fa-fw"></i> Login with Facebook
-                                        </a>
                                     </form>
-                                    <hr>
-                                    <div class="text-center">
-                                        <a class="font-weight-bold small" href="register.html">Create an Account!</a>
-                                    </div>
                                     <div class="text-center">
                                     </div>
                                 </div>

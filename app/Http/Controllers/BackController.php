@@ -20,7 +20,7 @@ class BackController extends Controller
     {
         $users = session('data_login');
         if ($users) {
-            return redirect()->route('home');
+            return redirect()->route('dashboard')->with('status', 'Maaf, Halaman yang anda tuju tidak tersedia.');
         }
         return view('login');
     }
