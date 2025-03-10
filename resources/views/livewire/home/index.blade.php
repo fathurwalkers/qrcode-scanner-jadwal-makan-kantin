@@ -223,6 +223,12 @@
         </div>
     </div>
 
+    <div class="row">
+        <div class="col-sm-12 col-md-12 col-lg-12 d-flex justify-content-center mt-3">
+            <small style="font-size: 10px">Created by IT Departement - PT. KARTIKA PRIMA ABADI</small>
+        </div>
+    </div>
+
     @push('js')
         <script>
             function runCountdown(element, startTime, endTime) {
