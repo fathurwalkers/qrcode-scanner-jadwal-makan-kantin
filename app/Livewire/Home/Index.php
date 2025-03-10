@@ -93,8 +93,10 @@ class Index extends Component
                 'malam' => null
             ];
             $rentangWaktu = '';
-            if ($currentHour >= 3 && ($currentHour < 4 || ($currentHour == 4 && $now->minute <= 40))) {
+            if (($currentHour >= 22) || ($currentHour == 2 && $now->minute <= 30)) {
                 $rentangWaktu = 'subuh';
+            } elseif (($currentHour >= 3 && $currentHour < 5) || ($currentHour == 5 && $now->minute <= 59)) {
+                $rentangWaktu = 'siang';
             } elseif ($currentHour >= 6 && ($currentHour < 8 || ($currentHour == 8 && $now->minute <= 30))) {
                 $rentangWaktu = 'pagi';
             } elseif ($currentHour >= 11 && $currentHour < 13) {

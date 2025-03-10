@@ -6,8 +6,12 @@ use Livewire\Component;
 
 class DashboardSidebar extends Component
 {
+    public $users;
     public function render()
     {
-        return view('livewire.dashboard.dashboard-sidebar');
+        $this->users = session('data_login');
+        return view('livewire.dashboard.dashboard-sidebar', [
+            'users' => $this->users,
+        ]);
     }
 }

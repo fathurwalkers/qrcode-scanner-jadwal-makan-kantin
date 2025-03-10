@@ -41,25 +41,30 @@
             <span>Tambah Data Karyawan</span>
         </a> --}}
     </li>
-    <hr class="sidebar-divider">
-    <div class="sidebar-heading">
-        Manajemen Karyawan
-    </div>
-    <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePage"
-            aria-expanded="true" aria-controls="collapsePage">
-            <i class="fas fa-fw fa-columns"></i>
-            <span>Data Karyawan</span>
-        </a>
-        <div id="collapsePage" class="collapse" aria-labelledby="headingPage"
-            data-parent="#accordionSidebar">
-            <div class="bg-white py-2 collapse-inner rounded">
-                <h6 class="collapse-header">Data Karyawan</h6>
-                <a class="collapse-item" href="{{ route('dashboard-data-karyawan') }}">Daftar Karyawan</a>
-                <a class="collapse-item" href="{{ route('dashboard-tambah-data-karyawan') }}">Tambah Data Karyawan</a>
-            </div>
+    @php
+        $allowedUsers = [1, 2, 3, 7, 8];
+    @endphp
+    @if(in_array($users->id, $allowedUsers))
+        <hr class="sidebar-divider">
+        <div class="sidebar-heading">
+            Manajemen Karyawan
         </div>
-    </li>
+        <li class="nav-item">
+            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePage"
+                aria-expanded="true" aria-controls="collapsePage">
+                <i class="fas fa-fw fa-columns"></i>
+                <span>Data Karyawan</span>
+            </a>
+            <div id="collapsePage" class="collapse" aria-labelledby="headingPage"
+                data-parent="#accordionSidebar">
+                <div class="bg-white py-2 collapse-inner rounded">
+                    <h6 class="collapse-header">Data Karyawan</h6>
+                    <a class="collapse-item" href="{{ route('dashboard-data-karyawan') }}">Daftar Karyawan</a>
+                    <a class="collapse-item" href="{{ route('dashboard-tambah-data-karyawan') }}">Tambah Data Karyawan</a>
+                </div>
+            </div>
+        </li>
+    @endif
     <hr class="sidebar-divider">
     {{-- <div class="version" id="version-ruangadmin"></div> --}}
 </div>

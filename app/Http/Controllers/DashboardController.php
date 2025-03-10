@@ -77,7 +77,6 @@ class DashboardController extends Controller
         return redirect()->back()->with('success', 'Data berhasil diimport dan diperbarui!');
     }
 
-
     public function parseAbsensi($content)
     {
         $data = [];
@@ -128,9 +127,6 @@ class DashboardController extends Controller
     public function post_buat_user(Request $request)
     {
         $data = new Data;
-        ### CARA LAMA ###
-        // $qr_raw = strtoupper($request->data_nama) . "#" . strtoupper($request->data_no_id_card);
-        ### CARA BARU ###
         $uniqueId = strtoupper($this->generateUniqueDataId());
         $qr_raw = strtoupper($uniqueId) . "#" . strtoupper($request->data_no_id_card);
         $key = 'fathur-ganteng';
@@ -177,7 +173,7 @@ class DashboardController extends Controller
     {
         $user_id = intval($request->user_id);
         $user = Data::find($user_id);
-        $filename = $user->data_nama . ' - (' . $user->data_no_id_card . ').png'; // Sesuaikan ekstensi file
+        $filename = $user->data_nama . ' - (' . $user->data_no_id_card . ').png';
         $filepath = public_path('qr/' . $filename);
         if (File::exists($filepath)) {
             echo "ADA!";
