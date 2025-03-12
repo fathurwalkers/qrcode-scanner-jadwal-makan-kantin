@@ -28,7 +28,6 @@ class Index extends Component
 
     public function render()
     {
-        $date = '2025-02-11';
         $this->tanggalHariIni = Carbon::today()->toDateString();
         $this->counts = DB::table('jadwal')
             ->whereDate('jadwal_tanggal', $this->tanggalHariIni)

@@ -35,6 +35,10 @@ class Index extends Component
     public $tanggalwaktu = "Tidak ada Data";
     public $qr_input;
 
+    public $jadwal;
+    public $tanggalHariIni;
+    public $counts;
+
     public function store()
     {
         $this->searchData($this->qr_input);
@@ -53,6 +57,24 @@ class Index extends Component
     public function searchData($inputPass)
     {
         $now = Carbon::now($this->timezone);
+
+        // Cek apakah inputPass adalah string terenkripsi AES atau hanya string biasa
+        $isEncrypted = false;
+
+        // Coba decode base64
+        $decoded = base64_decode($inputPass, true);
+        if ($decoded !== false) {
+            $parts = explode('::', $decoded);
+            if (count($parts) === 2) {
+                $isEncrypted = true;
+            }
+        }
+
+        // Debugging: Ganti dd untuk melihat jenis data
+        if (!$isEncrypted) {
+            return redirect()->route('home')->with('status', 'Terjadi kesalahan, silahkan melakukan scan ulang.');
+        }
+
         $decryptedData = $this->decryptQrData($inputPass);
         $explodeInputRequest = explode("#", $decryptedData);
         $data = Data::where('data_nama', $explodeInputRequest[0])
@@ -145,7 +167,7 @@ class Index extends Component
                     $this->{"waktu_scan_{$rentangWaktu}"} = $jadwalJam[$rentangWaktu];
                 }
             }
-            // TEMPAT FLASH SESSION MESSAGE
+            session()->flash('status', 'Scan berhasil! Data telah dicatat.');
         } else {
             $this->nama = "Data tidak Valid!";
         }
@@ -153,6 +175,19 @@ class Index extends Component
 
     public function render()
     {
-        return view('livewire.home.index');
+        $this->tanggalHariIni = Carbon::today()->toDateString();
+        $this->counts = DB::table('jadwal')
+            ->whereDate('jadwal_tanggal', $this->tanggalHariIni)
+            ->selectRaw('
+                SUM(CASE WHEN jadwal_cek_subuh = "YA" THEN 1 ELSE 0 END) as subuh,
+                SUM(CASE WHEN jadwal_cek_pagi = "YA" THEN 1 ELSE 0 END) as pagi,
+                SUM(CASE WHEN jadwal_cek_siang = "YA" THEN 1 ELSE 0 END) as siang,
+                SUM(CASE WHEN jadwal_cek_malam = "YA" THEN 1 ELSE 0 END) as malam
+            ')
+            ->first();
+        $this->jadwal = Jadwal::latest()->get();
+        return view('livewire.home.index', [
+            'counts' => $this->counts,
+        ]);
     }
 }

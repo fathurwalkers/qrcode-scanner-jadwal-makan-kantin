@@ -18,11 +18,11 @@
             </h4>
         </div>
     </div>
-    <div class="row mt-2 mb-1">
+    <div class="row mt-2 mb-2">
         <div class="col-md-8">
             <form wire:submit="store" class="">
                 <div class="input-group">
-                    <input type="text" class="form-control" placeholder="Silahkan scan QR anda disini..." aria-label="Search" wire:model.lazy="qr_input" autofocus>
+                    <input type="text" class="form-control" placeholder="Silahkan scan QR anda disini..." aria-label="Search" wire:model.lazy="qr_input" id="scanner_input" autofocus>
                     <div class="input-group-append">
                         <button class="btn btn-info" type="submit">
                             <i class="fas fa-search"></i>
@@ -45,17 +45,17 @@
         </div>
     </div>
 
-    <div class="row my-2">
+    <div class="row mt-3">
         <div class="col-sm-12 col-md-12 col-lg-12">
-            @if (session('ok'))
+            @if (session('status'))
                 <div class="alert alert-success">
-                    {{ session('ok') }}
+                    {{ session('status') }}
                 </div>
             @endif
         </div>
     </div>
 
-    <div class="row mt-3">
+    <div class="row">
         <div class="col-sm-12 col-md-12 col-lg-12">
             <table class="table table-bordered">
                 <thead>
@@ -151,7 +151,7 @@
                 <div class="card-body">
                     <div class="row align-items-center">
                         <div class="col mr-2">
-                            <h3 class="h3 mb-2 font-weight-bold text-gray-800 text-center">240</h3>
+                            <h3 class="h3 mb-2 font-weight-bold text-gray-800 text-center">{{ $counts->pagi }}</h3>
                             <p class="text-xs text-muted">
 
                             </p>
@@ -170,7 +170,7 @@
                 <div class="card-body">
                     <div class="row align-items-center">
                         <div class="col mr-2">
-                            <h3 class="h3 mb-2 font-weight-bold text-gray-800 text-center">240</h3>
+                            <h3 class="h3 mb-2 font-weight-bold text-gray-800 text-center">{{ $counts->siang }}</h3>
                             <p class="text-xs text-muted">
 
                             </p>
@@ -189,7 +189,7 @@
                 <div class="card-body">
                     <div class="row align-items-center">
                         <div class="col mr-2">
-                            <h3 class="h3 mb-2 font-weight-bold text-gray-800 text-center">240</h3>
+                            <h3 class="h3 mb-2 font-weight-bold text-gray-800 text-center">{{ $counts->malam }}</h3>
                             <p class="text-xs text-muted">
 
                             </p>
@@ -208,7 +208,7 @@
                 <div class="card-body">
                     <div class="row align-items-center">
                         <div class="col mr-2">
-                            <h3 class="h3 mb-2 font-weight-bold text-gray-800 text-center">240</h3>
+                            <h3 class="h3 mb-2 font-weight-bold text-gray-800 text-center">{{ $counts->subuh }}</h3>
                             <p class="text-xs text-muted">
 
                             </p>
@@ -231,24 +231,46 @@
 
     @push('js')
         <script>
+            (function () {
+                let timeout;
+                const idleTime = 300;
+                const inputId = "scanner_input";
+
+                function resetTimer() {
+                    clearTimeout(timeout);
+                    timeout = setTimeout(() => {
+                        location.reload();
+                    }, idleTime * 1000);
+                }
+
+                function setupIdleTimer() {
+                    const inputElement = document.getElementById(inputId);
+                    if (!inputElement) return;
+                    inputElement.addEventListener("keydown", resetTimer);
+                    inputElement.addEventListener("mousemove", resetTimer);
+                    inputElement.addEventListener("mousedown", resetTimer);
+                    inputElement.addEventListener("touchstart", resetTimer);
+                    inputElement.addEventListener("click", resetTimer);
+                    inputElement.addEventListener("scroll", resetTimer);
+                    inputElement.addEventListener("keypress", resetTimer);
+
+                    resetTimer();
+                }
+                document.addEventListener("DOMContentLoaded", setupIdleTimer);
+            })();
+
             function runCountdown(element, startTime, endTime) {
                 setInterval(() => {
                     const now = new Date();
-
-                    // Sesuaikan dengan zona waktu WITA (UTC +8)
-                    const timeZoneOffset = 8 * 60; // WITA = UTC +8
+                    const timeZoneOffset = 8 * 60;
                     const nowInWita = new Date(now.getTime() + now.getTimezoneOffset() * 60000 + timeZoneOffset *
                     60000);
-
                     let remainingTime;
-
                     if (nowInWita >= startTime && nowInWita <= endTime) {
-                        // Waktu berada di rentang
                         remainingTime = endTime - nowInWita;
                         element.classList.add('green');
                         element.classList.remove('red');
                     } else {
-                        // Waktu di luar rentang, hitung mundur ke waktu berikutnya
                         if (nowInWita > endTime) {
                             startTime.setDate(startTime.getDate() + 1);
                             endTime.setDate(endTime.getDate() + 1);
@@ -257,11 +279,9 @@
                         element.classList.add('red');
                         element.classList.remove('green');
                     }
-
                     const hours = Math.floor(remainingTime / (1000 * 60 * 60));
                     const minutes = Math.floor((remainingTime % (1000 * 60 * 60)) / (1000 * 60));
                     const seconds = Math.floor((remainingTime % (1000 * 60)) / 1000);
-
                     element.textContent =
                         `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
                 }, 1000);
@@ -271,11 +291,8 @@
                 const countdownElement = document.querySelector('.countdown-pagi');
                 const startTime = new Date();
                 const endTime = new Date();
-
-                // Rentang waktu PAGI: 02:00 AM - 08:00 AM WITA
-                startTime.setHours(2, 0, 0); // Set ke 02:00 AM WITA
-                endTime.setHours(8, 0, 0); // Set ke 08:00 AM WITA
-
+                startTime.setHours(2, 0, 0);
+                endTime.setHours(8, 0, 0);
                 runCountdown(countdownElement, startTime, endTime);
             }
 
@@ -283,11 +300,8 @@
                 const countdownElement = document.querySelector('.countdown-siang');
                 const startTime = new Date();
                 const endTime = new Date();
-
-                // Rentang waktu SIANG: 11:30 AM - 13:00 PM WITA
-                startTime.setHours(11, 0, 0); // Set ke 11:30 AM WITA
-                endTime.setHours(13, 0, 0); // Set ke 01:00 PM WITA
-
+                startTime.setHours(11, 0, 0);
+                endTime.setHours(13, 0, 0);
                 runCountdown(countdownElement, startTime, endTime);
             }
 
@@ -295,11 +309,8 @@
                 const countdownElement = document.querySelector('.countdown-sore');
                 const startTime = new Date();
                 const endTime = new Date();
-
-                // Rentang waktu MALAM: 16:30 PM - 19:00 PM WITA
-                startTime.setHours(16, 30, 0); // Set ke 04:30 PM WITA
-                endTime.setHours(20, 0, 0); // Set ke 09:00 PM WITA
-
+                startTime.setHours(16, 30, 0);
+                endTime.setHours(20, 0, 0);
                 runCountdown(countdownElement, startTime, endTime);
             }
 
@@ -307,21 +318,15 @@
                 const countdownElement = document.querySelector('.countdown-malam');
                 const startTime = new Date();
                 const endTime = new Date();
-
-                // Rentang waktu SUBUH: 04:00 AM - 05:30 AM WITA
-                startTime.setHours(4, 0, 0); // Set ke 04:00 AM WITA
-                endTime.setHours(5, 30, 0); // Set ke 05:30 AM WITA
-
-                // Atur waktu ke hari berikutnya jika sudah lewat SUBUH
+                startTime.setHours(4, 0, 0);
+                endTime.setHours(5, 30, 0);
                 if (new Date() > endTime) {
                     startTime.setDate(startTime.getDate() + 1);
                     endTime.setDate(endTime.getDate() + 1);
                 }
-
                 runCountdown(countdownElement, startTime, endTime);
             }
 
-            // Panggil semua fungsi countdown
             countdown_pagi();
             countdown_siang();
             countdown_sore();
