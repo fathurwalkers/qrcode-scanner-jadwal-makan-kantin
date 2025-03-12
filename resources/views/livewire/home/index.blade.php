@@ -1,4 +1,10 @@
 <div>
+
+    @push('css')
+    <style>
+
+    </style>
+    @endpush
     <div class="row mt-4">
         <div class="col-sm-12 col-md-12 col-lg-12 d-flex justify-content-center">
             <img src="{{ asset('assets/img') }}/logo.png" width="180" alt="" class="logo-styled mr-auto mx-auto">
@@ -18,11 +24,12 @@
             </h4>
         </div>
     </div>
+
     <div class="row mt-2 mb-2">
         <div class="col-md-8">
             <form wire:submit="store" class="">
                 <div class="input-group">
-                    <input type="text" class="form-control" placeholder="Silahkan scan QR anda disini..." aria-label="Search" wire:model.lazy="qr_input" id="scanner_input" autofocus>
+                    <input type="text" class="form-control" placeholder="Silahkan scan QR anda disini..." aria-label="Search" wire:model.lazy="qr_input" id="scanner_input" autocomplete="off" autofocus>
                     <div class="input-group-append">
                         <button class="btn btn-info" type="submit">
                             <i class="fas fa-search"></i>
@@ -32,6 +39,7 @@
                 </div>
             </form>
         </div>
+
         <div class="col-md-4">
             <div class="input-group">
                 <input type="text" class="form-control" placeholder="Search..." aria-label="Search">
@@ -231,6 +239,32 @@
 
     @push('js')
         <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                let scannerInput = document.getElementById('scanner_input');
+
+                // Fungsi untuk fokus kembali ke input
+                function setFocus() {
+                    setTimeout(() => {
+                        scannerInput.focus();
+                    }, 100); // Delay sedikit untuk menghindari konflik dengan event lainnya
+                }
+
+                // Fokus awal saat halaman dimuat
+                setFocus();
+
+                // Jika pengguna mengklik di mana saja pada halaman, tetap fokus ke input
+                document.addEventListener('click', function (event) {
+                    if (event.target !== scannerInput) {
+                        setFocus();
+                    }
+                });
+
+                // Jika pengguna menekan tombol TAB, tetap fokus ke input
+                scannerInput.addEventListener('blur', function () {
+                    setFocus();
+                });
+            });
+
             (function () {
                 let timeout;
                 const idleTime = 300;

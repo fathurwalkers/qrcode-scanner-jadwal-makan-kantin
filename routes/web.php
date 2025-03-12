@@ -12,7 +12,6 @@ use App\Livewire\Dashboard\Jadwal\Index as DashboardJadwalIndex;
 use App\Livewire\Dashboard\Karyawan\Index as DashboardKaryawanIndex;
 use App\Livewire\Dashboard\Karyawan\TambahKaryawan as DashboardTambahKaryawan;
 
-
 Route::group(['prefix' => '/'], function () {
     // Index Route
     Route::get('/', HomeIndex::class, 'index')->name('home');
