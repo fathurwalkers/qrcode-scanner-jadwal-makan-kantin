@@ -47,7 +47,7 @@ class Index extends Component
 
     public function decryptQrData($encryptedData)
     {
-        $key = 'fathur-ganteng';
+        $key = env('AES_KEY');
         list($encrypted, $iv) = explode('::', base64_decode($encryptedData));
         $iv = base64_decode($iv);
         $decrypted = openssl_decrypt($encrypted, 'aes-256-cbc', $key, 0, $iv);
@@ -57,11 +57,7 @@ class Index extends Component
     public function searchData($inputPass)
     {
         $now = Carbon::now($this->timezone);
-
-        // Cek apakah inputPass adalah string terenkripsi AES atau hanya string biasa
         $isEncrypted = false;
-
-        // Coba decode base64
         $decoded = base64_decode($inputPass, true);
         if ($decoded !== false) {
             $parts = explode('::', $decoded);
@@ -69,12 +65,9 @@ class Index extends Component
                 $isEncrypted = true;
             }
         }
-
-        // Debugging: Ganti dd untuk melihat jenis data
         if (!$isEncrypted) {
             return redirect()->route('home')->with('status', 'Terjadi kesalahan, silahkan melakukan scan ulang.');
         }
-
         $decryptedData = $this->decryptQrData($inputPass);
         $explodeInputRequest = explode("#", $decryptedData);
         $data = Data::where('data_nama', $explodeInputRequest[0])
@@ -130,12 +123,41 @@ class Index extends Component
             }
             if ($rentangWaktu == "") {
                 session('ok');
+                $jadwal_exist =  Jadwal::where('jadwal_tanggal', $tanggalHariIni)
+                    ->where('data_id', $data->id)
+                    ->first();
+                $jadwalCek = [
+                    'subuh' => $jadwal_exist->jadwal_cek_subuh,
+                    'pagi' => $jadwal_exist->jadwal_cek_pagi,
+                    'siang' => $jadwal_exist->jadwal_cek_siang,
+                    'malam' => $jadwal_exist->jadwal_cek_malam
+                ];
+                $jadwalJam = [
+                    'subuh' => $jadwal_exist->jadwal_jam_subuh,
+                    'pagi' => $jadwal_exist->jadwal_jam_pagi,
+                    'siang' => $jadwal_exist->jadwal_jam_siang,
+                    'malam' => $jadwal_exist->jadwal_jam_malam
+                ];
+                $rentangWaktu = '';
+                if ($jadwalJam['subuh'] !== null) {
+                    $rentangWaktu = 'subuh';
+                } elseif ($jadwalJam['pagi'] !== null) {
+                    $rentangWaktu = 'pagi';
+                } elseif ($jadwalJam['siang'] !== null) {
+                    $rentangWaktu = 'siang';
+                } elseif ($jadwalJam['malam'] !== null) {
+                    $rentangWaktu = 'malam';
+                } else {
+                    $rentangWaktu = '';
+                }
+                $this->{$rentangWaktu} = "YA";
+                $this->{"waktu_scan_{$rentangWaktu}"} = $jadwalJam[$rentangWaktu];
+                session()->flash('status', 'Maaf, anda melakukan scan diluar jadwal makan yang telah dilakukan, silahkan melakukan scan pada jadwal makan yang telah ditentukan.');
             } else {
                 $jadwalCek[$rentangWaktu] = 'YA';
                 $jadwalJam[$rentangWaktu] = $now->toTimeString();
-                $existingJadwal = Jadwal::where('jadwal_tanggal', $tanggalHariIni)
+                $existingJadwal =  Jadwal::where('jadwal_tanggal', $tanggalHariIni)
                     ->where('data_id', $data->id)
-                    ->where("jadwal_cek_{$rentangWaktu}", 'YA')
                     ->first();
                 if ($existingJadwal) {
                     $existingJadwal->update([
@@ -162,12 +184,11 @@ class Index extends Component
                         'created_at' => now(),
                         'updated_at' => now()
                     ]);
-
                     $this->{$rentangWaktu} = 'YA';
                     $this->{"waktu_scan_{$rentangWaktu}"} = $jadwalJam[$rentangWaktu];
                 }
             }
-            session()->flash('status', 'Scan berhasil! Data telah dicatat.');
+            // session()->flash('status', 'Scan berhasil! Data telah dicatat.');
         } else {
             $this->nama = "Data tidak Valid!";
         }

@@ -94,6 +94,9 @@
                                 @case('TIDAK')
                                     &#10006;
                                 @break
+                                @case(null)
+                                    &#10006;
+                                @break
                             @endswitch
                             <p class="waktu-scan">
                                 Waktu Scan : {{ $waktu_scan_pagi }}
@@ -106,6 +109,9 @@
                                 @break
 
                                 @case('TIDAK')
+                                    &#10006;
+                                @break
+                                @case(null)
                                     &#10006;
                                 @break
                             @endswitch
@@ -122,6 +128,9 @@
                                 @case('TIDAK')
                                     &#10006;
                                 @break
+                                @case(null)
+                                    &#10006;
+                                @break
                             @endswitch
                             <p class="waktu-scan">
                                 Waktu Scan : {{ $waktu_scan_malam }}
@@ -134,6 +143,9 @@
                                 @break
 
                                 @case('TIDAK')
+                                    &#10006;
+                                @break
+                                @case(null)
                                     &#10006;
                                 @break
                             @endswitch

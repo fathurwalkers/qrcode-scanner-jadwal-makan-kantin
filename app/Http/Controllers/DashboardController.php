@@ -28,7 +28,7 @@ class DashboardController extends Controller
         $content = file_get_contents($path);
         $parsedData = $this->parseAbsensi($content);
         foreach ($parsedData as $dataParse) {
-            $date = Carbon::create(2025, 3, 7)->toDateString();
+            $date = $now->toDateString();
             $nama = $dataParse['nama'];
             $no_id_card = $dataParse['nik'];
             $data = Data::where('data_no_id_card', 'LIKE', "%$no_id_card%")
