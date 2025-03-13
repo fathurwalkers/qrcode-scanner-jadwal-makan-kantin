@@ -7,6 +7,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\HomeController;
 use App\Http\Middleware\CekLogin;
 use App\Livewire\Home\Index as HomeIndex;
+use App\Livewire\HomeIndexTest as HomeTest;
 use App\Livewire\Dashboard\Index as DashboardIndex;
 use App\Livewire\Dashboard\Jadwal\Index as DashboardJadwalIndex;
 use App\Livewire\Dashboard\Karyawan\Index as DashboardKaryawanIndex;
@@ -15,6 +16,7 @@ use App\Livewire\Dashboard\Karyawan\TambahKaryawan as DashboardTambahKaryawan;
 Route::group(['prefix' => '/'], function () {
     // Index Route
     Route::get('/', HomeIndex::class, 'index')->name('home');
+    Route::get('/home-test', HomeTest::class, 'index')->name('home-test');
 });
 
 Route::group(['prefix' => '/dashboard', 'middleware' => CekLogin::class], function () {

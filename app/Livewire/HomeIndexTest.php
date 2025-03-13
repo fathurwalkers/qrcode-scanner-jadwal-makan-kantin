@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire\Home;
+namespace App\Livewire;
 
 use Livewire\Component;
 use Illuminate\Support\Facades\Hash;
@@ -18,7 +18,7 @@ use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Crypt;
 
-class Index extends Component
+class HomeIndexTest extends Component
 {
     #[Title('QR Scanner App - PT. KPA')]
     public $timezone = 'Asia/Makassar';
@@ -66,7 +66,7 @@ class Index extends Component
             }
         }
         if (!$isEncrypted) {
-            return redirect()->route('home')->with('status', 'Terjadi kesalahan, silahkan melakukan scan ulang.');
+            return redirect()->route('home-test')->with('status', 'Terjadi kesalahan, silahkan melakukan scan ulang.');
         }
         $decryptedData = $this->decryptQrData($inputPass);
         $explodeInputRequest = explode("#", $decryptedData);
@@ -260,7 +260,7 @@ class Index extends Component
             ')
             ->first();
         $this->jadwal = Jadwal::latest()->get();
-        return view('livewire.home.index', [
+        return view('livewire.home-index-test', [
             'counts' => $this->counts,
         ]);
     }
