@@ -34,7 +34,6 @@ class HomeIndexTest extends Component
     public $waktu_scan_malam = null;
     public $tanggalwaktu = "Tidak ada Data";
     public $qr_input;
-
     public $jadwal;
     public $tanggalHariIni;
     public $counts;
@@ -162,13 +161,10 @@ class HomeIndexTest extends Component
                 if ($existingJadwal) {
                     $existingJadwal->update([
                         'jadwal_tanggal' => $tanggalHariIni,
-
                         'jadwal_cek_subuh' => ($existingJadwal->jadwal_cek_subuh === "TIDAK" || is_null($existingJadwal->jadwal_jam_subuh)) ? $jadwalCek['subuh'] : $existingJadwal->jadwal_cek_subuh,
                         'jadwal_cek_pagi' => ($existingJadwal->jadwal_cek_pagi === "TIDAK" || is_null($existingJadwal->jadwal_jam_pagi)) ? $jadwalCek['pagi'] : $existingJadwal->jadwal_cek_pagi,
                         'jadwal_cek_siang' => ($existingJadwal->jadwal_cek_siang === "TIDAK" || is_null($existingJadwal->jadwal_jam_siang)) ? $jadwalCek['siang'] : $existingJadwal->jadwal_cek_siang,
                         'jadwal_cek_malam' => ($existingJadwal->jadwal_cek_malam === "TIDAK" || is_null($existingJadwal->jadwal_jam_malam)) ? $jadwalCek['malam'] : $existingJadwal->jadwal_cek_malam,
-
-                        // Update jadwal_jam jika NULL atau jika ada input baru (agar tidak jadi NULL)
                         'jadwal_jam_subuh' => !empty($jadwalJam['subuh']) ? $jadwalJam['subuh'] : $existingJadwal->jadwal_jam_subuh,
                         'jadwal_jam_pagi' => !empty($jadwalJam['pagi']) ? $jadwalJam['pagi'] : $existingJadwal->jadwal_jam_pagi,
                         'jadwal_jam_siang' => !empty($jadwalJam['siang']) ? $jadwalJam['siang'] : $existingJadwal->jadwal_jam_siang,
@@ -176,7 +172,6 @@ class HomeIndexTest extends Component
 
                         'updated_at' => now()
                     ]);
-
                     $jadwal_exist =  Jadwal::where('jadwal_tanggal', $tanggalHariIni)
                         ->where('data_id', $data->id)
                         ->first();
@@ -192,12 +187,6 @@ class HomeIndexTest extends Component
                         'siang' => !empty($jadwalJam['siang']) ? $jadwalJam['siang'] : $jadwal_exist->jadwal_jam_siang,
                         'malam' => !empty($jadwalJam['malam']) ? $jadwalJam['malam'] : $jadwal_exist->jadwal_jam_malam
                     ];
-                    // dd(
-                    //     [
-                    //         $jadwalCek,
-                    //         $jadwalJam,
-                    //     ]
-                    // );
                     $rentangWaktu = '';
                     if ($jadwalJam['subuh'] !== null) {
                         $rentangWaktu = 'subuh';
