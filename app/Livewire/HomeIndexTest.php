@@ -107,16 +107,30 @@ class HomeIndexTest extends Component
                 'malam' => null
             ];
             $rentangWaktu = '';
-            if (($currentHour == 3 && $now->minute >= 0) || ($currentHour < 5) || ($currentHour == 5 && $now->minute <= 30)) {
+
+            if (
+                ($currentHour >= 22) ||  // 22:00 - 23:59
+                ($currentHour < 2) ||   // 00:00 - 01:59
+                ($currentHour == 2 && $now->minute <= 59) // 02:00 - 02:59
+            ) {
                 $rentangWaktu = 'subuh';
-            } elseif (($currentHour == 6) || ($currentHour < 8) || ($currentHour == 8 && $now->minute <= 30)) {
+            } elseif (
+                ($currentHour == 6) ||  // 06:00
+                ($currentHour >= 7 && $currentHour < 8) ||   // 07:00 - 07:59
+                ($currentHour == 8 && $now->minute <= 30) // 08:00 - 08:30
+            ) {
                 $rentangWaktu = 'pagi';
-            } elseif (($currentHour == 11) || ($currentHour < 13)) {
+            } elseif (
+                ($currentHour == 11) ||  // 11:00
+                ($currentHour >= 12 && $currentHour < 13) ||   // 12:00 - 12:59
+                ($currentHour == 3) ||   // 03:00 - 03:59
+                ($currentHour == 4 && $now->minute <= 30) // 04:00 - 04:30
+            ) {
                 $rentangWaktu = 'siang';
             } elseif (
                 ($currentHour == 16 && $now->minute >= 30) ||  // 16:30 ke atas
                 ($currentHour >= 17 && $currentHour < 19) ||   // 17:00 - 18:59
-                ($currentHour == 19 && $now->minute <= 30)     // 19:00 - 19:30
+                ($currentHour == 19 && $now->minute == 0)      // 19:00 pas
             ) {
                 $rentangWaktu = 'malam';
             }
