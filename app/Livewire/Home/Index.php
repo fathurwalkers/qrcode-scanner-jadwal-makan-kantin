@@ -125,6 +125,10 @@ class Index extends Component
                 $jadwal_exist =  Jadwal::where('jadwal_tanggal', $tanggalHariIni)
                     ->where('data_id', $data->id)
                     ->first();
+                if (!$jadwal_exist) {
+                    session()->flash('status', 'Maaf, anda melakukan scan diluar jadwal makan yang telah dilakukan, silahkan melakukan scan pada jadwal makan yang telah ditentukan.');
+                    return;
+                }
                 $jadwalCek = [
                     'subuh' => $jadwal_exist->jadwal_cek_subuh,
                     'pagi' => $jadwal_exist->jadwal_cek_pagi,
@@ -169,6 +173,7 @@ class Index extends Component
                         'jadwal_jam_pagi' => !empty($jadwalJam['pagi']) ? $jadwalJam['pagi'] : $existingJadwal->jadwal_jam_pagi,
                         'jadwal_jam_siang' => !empty($jadwalJam['siang']) ? $jadwalJam['siang'] : $existingJadwal->jadwal_jam_siang,
                         'jadwal_jam_malam' => !empty($jadwalJam['malam']) ? $jadwalJam['malam'] : $existingJadwal->jadwal_jam_malam,
+
                         'updated_at' => now()
                     ]);
                     $jadwal_exist =  Jadwal::where('jadwal_tanggal', $tanggalHariIni)
