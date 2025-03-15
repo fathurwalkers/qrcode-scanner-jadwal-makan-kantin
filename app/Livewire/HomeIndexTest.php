@@ -107,24 +107,28 @@ class HomeIndexTest extends Component
                 'malam' => null
             ];
             $rentangWaktu = '';
-            if (($currentHour >= 22) || ($currentHour == 2 && $now->minute <= 30)) {
+            if (($currentHour == 3 && $now->minute >= 0) || ($currentHour < 5) || ($currentHour == 5 && $now->minute <= 30)) {
                 $rentangWaktu = 'subuh';
-            } elseif (($currentHour >= 3 && $currentHour < 5) || ($currentHour == 5 && $now->minute <= 59)) {
-                $rentangWaktu = 'siang';
-            } elseif ($currentHour >= 6 && ($currentHour < 8 || ($currentHour == 8 && $now->minute <= 30))) {
+            } elseif (($currentHour == 6) || ($currentHour < 8) || ($currentHour == 8 && $now->minute <= 30)) {
                 $rentangWaktu = 'pagi';
-            } elseif ($currentHour >= 11 && $currentHour < 13) {
+            } elseif (($currentHour == 11) || ($currentHour < 13)) {
                 $rentangWaktu = 'siang';
-            } elseif (($currentHour == 16 && $now->minute >= 30) || ($currentHour >= 17 && $currentHour < 19)) {
+            } elseif (
+                ($currentHour == 16 && $now->minute >= 30) ||  // 16:30 ke atas
+                ($currentHour >= 17 && $currentHour < 19) ||   // 17:00 - 18:59
+                ($currentHour == 19 && $now->minute <= 30)     // 19:00 - 19:30
+            ) {
                 $rentangWaktu = 'malam';
-            } else {
-                $rentangWaktu = '';
             }
             if ($rentangWaktu == "") {
                 session('ok');
                 $jadwal_exist =  Jadwal::where('jadwal_tanggal', $tanggalHariIni)
                     ->where('data_id', $data->id)
                     ->first();
+                if (!$jadwal_exist) {
+                    session()->flash('status', 'Maaf, anda melakukan scan diluar jadwal makan yang telah dilakukan.');
+                    return;
+                }
                 $jadwalCek = [
                     'subuh' => $jadwal_exist->jadwal_cek_subuh,
                     'pagi' => $jadwal_exist->jadwal_cek_pagi,
@@ -137,20 +141,14 @@ class HomeIndexTest extends Component
                     'siang' => $jadwal_exist->jadwal_jam_siang,
                     'malam' => $jadwal_exist->jadwal_jam_malam
                 ];
-                $rentangWaktu = '';
-                if ($jadwalJam['subuh'] !== null) {
-                    $rentangWaktu = 'subuh';
-                } elseif ($jadwalJam['pagi'] !== null) {
-                    $rentangWaktu = 'pagi';
-                } elseif ($jadwalJam['siang'] !== null) {
-                    $rentangWaktu = 'siang';
-                } elseif ($jadwalJam['malam'] !== null) {
-                    $rentangWaktu = 'malam';
-                } else {
-                    $rentangWaktu = '';
-                }
-                $this->{$rentangWaktu} = "YA";
-                $this->{"waktu_scan_{$rentangWaktu}"} = $jadwalJam[$rentangWaktu];
+                $this->subuh = $jadwalCek["subuh"];
+                $this->pagi = $jadwalCek["pagi"];
+                $this->siang = $jadwalCek["siang"];
+                $this->malam = $jadwalCek["malam"];
+                $this->waktu_scan_subuh = $jadwalJam["subuh"];
+                $this->waktu_scan_pagi = $jadwalJam["pagi"];
+                $this->waktu_scan_siang = $jadwalJam["siang"];
+                $this->waktu_scan_malam = $jadwalJam["malam"];
                 session()->flash('status', 'Maaf, anda melakukan scan diluar jadwal makan yang telah dilakukan, silahkan melakukan scan pada jadwal makan yang telah ditentukan.');
             } else {
                 $jadwalCek[$rentangWaktu] = 'YA';

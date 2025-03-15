@@ -356,7 +356,7 @@
                 const startTime = new Date();
                 const endTime = new Date();
                 startTime.setHours(16, 30, 0);
-                endTime.setHours(20, 0, 0);
+                endTime.setHours(19, 0, 0);
                 runCountdown(countdownElement, startTime, endTime);
             }
 
