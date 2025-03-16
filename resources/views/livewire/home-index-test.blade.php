@@ -337,8 +337,8 @@
                 const countdownElement = document.querySelector('.countdown-pagi');
                 const startTime = new Date();
                 const endTime = new Date();
-                startTime.setHours(2, 0, 0);
-                endTime.setHours(8, 0, 0);
+                startTime.setHours(6, 0, 0);
+                endTime.setHours(8, 30, 0);
                 runCountdown(countdownElement, startTime, endTime);
             }
 
@@ -356,7 +356,7 @@
                 const startTime = new Date();
                 const endTime = new Date();
                 startTime.setHours(16, 30, 0);
-                endTime.setHours(19, 0, 0);
+                endTime.setHours(19, 30, 0);
                 runCountdown(countdownElement, startTime, endTime);
             }
 
@@ -364,12 +364,18 @@
                 const countdownElement = document.querySelector('.countdown-malam');
                 const startTime = new Date();
                 const endTime = new Date();
-                startTime.setHours(4, 0, 0);
-                endTime.setHours(5, 30, 0);
-                if (new Date() > endTime) {
-                    startTime.setDate(startTime.getDate() + 1);
+
+                startTime.setHours(22, 0, 0);
+                endTime.setHours(2, 10, 0); // Ubah hingga 02:59 sesuai dengan PHP
+
+                // Jika waktu saat ini sudah melewati endTime, sesuaikan tanggal
+                const now = new Date();
+                if (now.getHours() < 22) {
+                    startTime.setDate(startTime.getDate() - 1);
+                } else if (now.getHours() >= 22 || now.getHours() < 3) {
                     endTime.setDate(endTime.getDate() + 1);
                 }
+
                 runCountdown(countdownElement, startTime, endTime);
             }
 

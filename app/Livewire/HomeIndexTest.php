@@ -111,7 +111,7 @@ class HomeIndexTest extends Component
             if (
                 ($currentHour >= 22) ||  // 22:00 - 23:59
                 ($currentHour < 2) ||   // 00:00 - 01:59
-                ($currentHour == 2 && $now->minute <= 59) // 02:00 - 02:59
+                ($currentHour == 2 && $now->minute <= 10) // 02:00 - 02:10
             ) {
                 $rentangWaktu = 'subuh';
             } elseif (
