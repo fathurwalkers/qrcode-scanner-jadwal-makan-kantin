@@ -6,6 +6,7 @@ use App\Http\Controllers\GenerateController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\HomeController;
 use App\Http\Middleware\CekLogin;
+use App\Http\Middleware\HandleServerError;
 use App\Livewire\Home\Index as HomeIndex;
 use App\Livewire\HomeIndexTest as HomeTest;
 use App\Livewire\Dashboard\Index as DashboardIndex;
@@ -19,7 +20,7 @@ Route::group(['prefix' => '/'], function () {
     Route::get('/home-test', HomeTest::class, 'index')->name('home-test');
 });
 
-Route::group(['prefix' => '/dashboard', 'middleware' => CekLogin::class], function () {
+Route::group(['prefix' => '/dashboard', 'middleware' => [CekLogin::class, HandleServerError::class]], function () {
     // Index Route
     // [ GET ]
     Route::get('/', DashboardIndex::class, 'index')->name('dashboard');
