@@ -37,6 +37,7 @@ class HomeIndexTest extends Component
     public $jadwal;
     public $tanggalHariIni;
     public $counts;
+    public $title;
 
     public function store()
     {
@@ -55,6 +56,14 @@ class HomeIndexTest extends Component
 
     public function searchData($inputPass)
     {
+        $this->subuh = "TIDAK";
+        $this->pagi = "TIDAK";
+        $this->siang = "TIDAK";
+        $this->malam = "TIDAK";
+        $this->waktu_scan_subuh = NULL;
+        $this->waktu_scan_pagi = NULL;
+        $this->waktu_scan_siang = NULL;
+        $this->waktu_scan_malam = NULL;
         $now = Carbon::now($this->timezone);
         $isEncrypted = false;
         $decoded = base64_decode($inputPass, true);
@@ -261,8 +270,10 @@ class HomeIndexTest extends Component
             ')
             ->first();
         $this->jadwal = Jadwal::latest()->get();
+        $this->title = 'QR Scanner App - PT. KPA';
         return view('livewire.home-index-test', [
             'counts' => $this->counts,
+            'title' => $this->title,
         ]);
     }
 }

@@ -7,7 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link href="{{ asset('assets/bootstrap4/css') }}/bootstrap.min.css" rel="stylesheet">
     <link href="{{ asset('assets/fontawesome5/css') }}/all.min.css" rel="stylesheet">
-    <title>{{ $title ?? 'Title' }}</title>
+    <title>@yield('title')</title>
 
     <style>
         .logo-styled {

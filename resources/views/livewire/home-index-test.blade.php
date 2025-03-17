@@ -1,5 +1,7 @@
 <div>
 
+    @section('title', $title)
+
     @push('css')
     <style>
 
